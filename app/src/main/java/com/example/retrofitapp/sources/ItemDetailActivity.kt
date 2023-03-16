@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.retrofitapp.R
-import com.example.retrofitapp.databinding.EpisodesDetailBinding
 import com.example.retrofitapp.databinding.ItemDetailBinding
 import com.example.retrofitapp.sources.character.data.Results
 import kotlinx.coroutines.Dispatchers
