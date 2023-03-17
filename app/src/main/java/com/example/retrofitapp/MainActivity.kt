@@ -1,14 +1,14 @@
-package com.example.retrofitapp.sources
+package com.example.retrofitapp
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.retrofitapp.R
-import com.example.retrofitapp.sources.character.data.Results
+import com.example.retrofitapp.sources.ItemAdapter
+import com.example.retrofitapp.sources.ItemDetailActivity
+import com.example.retrofitapp.sources.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = characterAdapter
 
         characterAdapter.onCharacterClick = {
-
             val intent = Intent(this, ItemDetailActivity::class.java)
             startActivity(intent)
         }

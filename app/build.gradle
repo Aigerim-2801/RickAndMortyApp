@@ -4,6 +4,9 @@ plugins {
 }
 
 android {
+    buildFeatures {
+        viewBinding true
+    }
     buildFeatures.dataBinding = true
     namespace 'com.example.retrofitapp'
     compileSdk 33

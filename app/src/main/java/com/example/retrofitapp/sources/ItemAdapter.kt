@@ -1,10 +1,10 @@
 package com.example.retrofitapp.sources
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.ItemsLayoutBinding
 import com.example.retrofitapp.sources.character.data.Results
 
@@ -27,6 +27,19 @@ class ItemAdapter(var character: List<Results>) : RecyclerView.Adapter<ItemAdapt
                 binding.status.text = item.status
                 Glide.with(holder.itemView.context).load(item.image)
                     .into(binding.imageView)
+
+
+            when (item.status) {
+                "Alive" -> {
+                    binding.statusImg.setImageResource(R.drawable.status_alive)
+                }
+                "Dead" -> {
+                    binding.statusImg.setImageResource(R.drawable.status_dead)
+                }
+                else -> {
+                    binding.statusImg.setImageResource(R.drawable.status_unknown)
+                }
+            }
         }
 
         holder.itemView.setOnClickListener {
