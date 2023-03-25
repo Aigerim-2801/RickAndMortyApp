@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Retrofit App</string>
     <string name="informations">Informations</string>
     <string name="gender">Gender</string>
     <string name="origin">Origin</string>
     <string name="type">Type</string>
-    <string name="location">Location</string>
-    <string name="episodes">Episodes</string>
-    <string name="app_name">Retrofit App</string>
+    <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
+    <string name="title_character">Character</string>
+    <string name="title_location">Location</string>
+    <string name="title_episode">Episode</string>
 </resources>

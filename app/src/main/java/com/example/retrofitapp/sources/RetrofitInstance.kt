@@ -1,6 +1,8 @@
 package com.example.retrofitapp.sources
 
 import com.example.retrofitapp.sources.character.CharacterApi
+import com.example.retrofitapp.sources.episode.EpisodeApi
+import com.example.retrofitapp.sources.location.LocationApi
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -13,8 +15,15 @@ object RetrofitInstance {
             .build()
     }
 
-    val api: CharacterApi by lazy {
+    val api_character: CharacterApi by lazy {
         retrofit.create(CharacterApi::class.java)
     }
 
+    val api_location: LocationApi by lazy {
+        retrofit.create(LocationApi::class.java)
+    }
+
+    val api_episode: EpisodeApi by lazy {
+        retrofit.create(EpisodeApi::class.java)
+    }
 }

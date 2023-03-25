@@ -14,10 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RetrofitApp"
         tools:targetApi="31">
-
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".BottomNavigationActivity"
+            android:exported="true"
+            android:label="@string/title_activity_bottom_navigation">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,8 +29,9 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
-            android:name=".sources.ItemDetailActivity"
+            android:name=".sources.character.CharacterDetailActivity"
             android:exported="true"
             android:theme="@style/Theme.RetrofitApp.NoActionBar">
             <intent-filter>
@@ -38,6 +40,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

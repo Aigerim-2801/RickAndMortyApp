@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:id="@+id/episodes_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#081F32"
+            android:textSize="16sp"
+            android:layout_marginStart="20dp"
+            tools:text="SubTitle"
+            android:layout_alignParentStart="true"/>
+        <TextView
+            android:id="@+id/name_episodes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="3dp"
+            android:textColor="#6E798C"
+            android:textSize="14sp"
+            tools:text="txt"
+            android:layout_below="@id/episodes_all"/>
+
+        <TextView
+            android:id="@+id/air_date_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="3dp"
+            android:textColor="#6E798C"
+            android:textSize="12sp"
+            tools:text="txt"
+            android:textAllCaps="true"
+            android:layout_below="@id/name_episodes"/>
+
+        <ImageButton
+            android:id="@+id/btn_episode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_go"
+            android:background="@color/white"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+</layout>

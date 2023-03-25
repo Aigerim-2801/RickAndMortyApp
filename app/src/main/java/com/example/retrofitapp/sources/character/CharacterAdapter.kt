@@ -1,4 +1,4 @@
-package com.example.retrofitapp.sources
+package com.example.retrofitapp.sources.character
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,21 +6,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.ItemsLayoutBinding
-import com.example.retrofitapp.sources.character.data.Results
+import com.example.retrofitapp.sources.character.data.ResultsCharacter
 
 
-class ItemAdapter(var character: List<Results>) : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
+class CharacterAdapter(var character: List<ResultsCharacter>) : RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder>() {
 
-    var onCharacterClick: ((Results) -> Unit)? = null
+    var onCharacterClick: ((ResultsCharacter) -> Unit)? = null
 
-    class ViewHolder(val binding: ItemsLayoutBinding) : RecyclerView.ViewHolder(binding.root)
+    class CharacterViewHolder(val binding: ItemsLayoutBinding) : RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
         val binding = ItemsLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+        return CharacterViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         val item = character[position]
         with(holder) {
                 binding.name.text = item.name
