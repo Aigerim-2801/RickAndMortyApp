@@ -1,5 +1,6 @@
 package com.example.retrofitapp.sources.character
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.ItemDetailBinding
 import com.example.retrofitapp.sources.RetrofitInstance
 import com.example.retrofitapp.sources.character.data.ResultsCharacter
+import com.example.retrofitapp.sources.episode.EpisodeCharacterActivity
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,31 +28,21 @@ class CharacterDetailActivity : AppCompatActivity() {
         binding = ItemDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        setSupportActionBar(binding.toolbar)
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//        supportActionBar?.setDisplayShowHomeEnabled(true)
-//
-//
-//        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-//            val totalScrollRange = appBarLayout.totalScrollRange
-//
-//            val percentage = Math.abs(verticalOffset).toFloat() / totalScrollRange.toFloat()
-//
-//            binding.toolbar.visibility = if (percentage == 1f) View.VISIBLE else View.GONE
-//
-//            if (percentage == 1f) {
-//                binding.toolbarLayout.title = "SOLP"
-//            } else {
-//                binding.toolbarLayout.title = ""
-//            }
-//        })
-
 
         val layoutManager = LinearLayoutManager(this)
         binding.contentCharacter.episodesRV.layoutManager = layoutManager
         episodeAdapter = EpisodeAdapter(emptyList())
         binding.contentCharacter.episodesRV.adapter = episodeAdapter
 
+
+        episodeAdapter.onEpisodenClick = {
+
+            val intent = Intent(this, EpisodeCharacterActivity::class.java).apply {
+                putExtra("episode_id", it.id)
+            }
+            startActivity(intent)
+
+        }
 
         GlobalScope.launch(Dispatchers.IO) {
             try {

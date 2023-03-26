@@ -25,7 +25,7 @@ class EpisodesAdapter(var episodes: List<ResultsEpisode>) : RecyclerView.Adapter
             binding.airDateAll.text = item.air_date
         }
 
-        holder.itemView.setOnClickListener {
+        holder.binding.btnEpisode.setOnClickListener {
             onEpisodesClick?.invoke(item)
         }
     }

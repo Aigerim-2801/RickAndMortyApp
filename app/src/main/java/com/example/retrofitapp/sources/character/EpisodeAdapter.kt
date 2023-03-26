@@ -14,6 +14,8 @@ import retrofit2.Response
 
 class EpisodeAdapter(var episodes: List<String>) : RecyclerView.Adapter<EpisodeAdapter.ViewHolder>() {
 
+    var onEpisodenClick: ((ResultsEpisode) -> Unit)? = null
+
     class ViewHolder(val binding: EpisodeDetailBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,6 +34,12 @@ class EpisodeAdapter(var episodes: List<String>) : RecyclerView.Adapter<EpisodeA
                     holder.binding.episode.text = episode?.episode
                     holder.binding.nameEpisode.text = episode?.name
                     holder.binding.airDate.text = episode?.air_date
+
+                    holder.binding.btnEpisode.setOnClickListener {
+                        if (episode != null) {
+                            onEpisodenClick?.invoke(episode)
+                        }
+                    }
                 }
             }
 

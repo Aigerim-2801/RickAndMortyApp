@@ -1,5 +1,6 @@
 package com.example.retrofitapp.sources.location
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.LocationFragmentBinding
 import com.example.retrofitapp.sources.RetrofitInstance
+import com.example.retrofitapp.sources.character.CharacterDetailActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -33,6 +35,16 @@ class LocationFragment : Fragment(R.layout.location_detail) {
         binding.locationRv.layoutManager = layoutManager
         locationAdapter = LocationAdapter(emptyList())
         binding.locationRv.adapter = locationAdapter
+
+
+        locationAdapter.onLocationClick = {
+
+            val intent = Intent(requireContext(), LocationCharacterActivity::class.java).apply {
+                putExtra("location_id", it.id)
+            }
+            startActivity(intent)
+
+        }
 
         GlobalScope.launch(Dispatchers.IO) {
             try {
