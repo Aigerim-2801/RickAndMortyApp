@@ -40,8 +40,8 @@ class CharacterFragment : Fragment() {
             val intent = Intent(requireContext(), CharacterDetailActivity::class.java).apply {
                 putExtra("character_id", it.id)
             }
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
-
         }
 
         GlobalScope.launch(Dispatchers.IO) {

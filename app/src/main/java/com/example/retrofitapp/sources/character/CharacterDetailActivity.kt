@@ -14,7 +14,6 @@ import com.example.retrofitapp.sources.RetrofitInstance
 import com.example.retrofitapp.sources.character.data.ResultsCharacter
 import com.example.retrofitapp.sources.episode.EpisodeCharacterActivity
 import com.example.retrofitapp.sources.location.LocationCharacterActivity
-import com.example.retrofitapp.sources.location.data.ResultsLocation
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -41,17 +40,9 @@ class CharacterDetailActivity : AppCompatActivity() {
             val intent = Intent(this, EpisodeCharacterActivity::class.java).apply {
                 putExtra("episode_id", it.id)
             }
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
-
-
-        binding.contentCharacter.btnLocation.setOnClickListener {
-            val intent = Intent(this, LocationCharacterActivity::class.java).apply {
-                putExtra("location_id", it.id)
-            }
-            startActivity(intent)
-        }
-
 
         GlobalScope.launch(Dispatchers.IO) {
             try {
@@ -73,6 +64,14 @@ class CharacterDetailActivity : AppCompatActivity() {
 
                         binding.contentCharacter.episodesRV.adapter = episodeAdapter.apply {
                             episodes = characterInfo?.episode ?: emptyList()
+                        }
+
+                        binding.contentCharacter.btnLocation.setOnClickListener {
+                            val intent = Intent(this@CharacterDetailActivity, LocationCharacterActivity::class.java).apply {
+                                val locationId = characterInfo?.location?.url?.let { it1 -> getIdUrl(it1) }
+                                putExtra("location_id", locationId?.toInt())
+                            }
+                            startActivity(intent)
                         }
 
                     }
@@ -98,4 +97,7 @@ class CharacterDetailActivity : AppCompatActivity() {
     }
 
 
+    private fun getIdUrl(url: String): String {
+        return url.substring(url.lastIndexOf("/") + 1)
+    }
 }

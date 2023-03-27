@@ -6,7 +6,7 @@
     <string name="origin">Origin</string>
     <string name="type">Type</string>
     <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
-    <string name="title_character">Character</string>
-    <string name="title_location">Location</string>
-    <string name="title_episode">Episode</string>
+    <string name="title_character">Characters</string>
+    <string name="title_location">Locations</string>
+    <string name="title_episode">Episodes</string>
 </resources>

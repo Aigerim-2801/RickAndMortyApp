@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.LocationFragmentBinding
 import com.example.retrofitapp.sources.RetrofitInstance
-import com.example.retrofitapp.sources.character.CharacterDetailActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -42,6 +41,8 @@ class LocationFragment : Fragment(R.layout.location_detail) {
             val intent = Intent(requireContext(), LocationCharacterActivity::class.java).apply {
                 putExtra("location_id", it.id)
             }
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+
             startActivity(intent)
 
         }

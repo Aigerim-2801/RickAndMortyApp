@@ -42,6 +42,7 @@ class EpisodeFragment : Fragment(R.layout.episodes_all_details){
             val intent = Intent(requireContext(), EpisodeCharacterActivity::class.java).apply {
                 putExtra("episode_id", it.id)
             }
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
 
         }

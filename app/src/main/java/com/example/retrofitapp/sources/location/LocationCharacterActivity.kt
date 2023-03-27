@@ -1,11 +1,13 @@
 package com.example.retrofitapp.sources.location
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.retrofitapp.databinding.LocationCharacterBinding
 import com.example.retrofitapp.sources.RetrofitInstance
+import com.example.retrofitapp.sources.character.CharacterDetailActivity
 import com.example.retrofitapp.sources.location.data.ResultsLocation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -31,6 +33,16 @@ class LocationCharacterActivity : AppCompatActivity() {
         locationCharacterAdapter = LocationCharacterAdapter(emptyList())
         binding.locationCharacterRv.adapter = locationCharacterAdapter
 
+
+        locationCharacterAdapter.onCharacterClick = {
+
+            val intent = Intent(this, CharacterDetailActivity::class.java).apply {
+                putExtra("character_id", it.id)
+            }
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+
+        }
 
         GlobalScope.launch(Dispatchers.IO) {
             try {

@@ -15,6 +15,8 @@ import retrofit2.Response
 
 class LocationCharacterAdapter(var residents: List<String>) : RecyclerView.Adapter<LocationCharacterAdapter.LocationCharacterViewHolder>() {
 
+    var onCharacterClick: ((ResultsCharacter) -> Unit)? = null
+
     class LocationCharacterViewHolder(val binding: LocationCharacterContentBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationCharacterViewHolder {
@@ -47,6 +49,12 @@ class LocationCharacterAdapter(var residents: List<String>) : RecyclerView.Adapt
                         else -> {
                             holder.binding.statusImgLocationCharacter.setImageResource(R.drawable.status_unknown)
                         }
+                    }
+                    holder.itemView.setOnClickListener {
+                        if (resident != null) {
+                            onCharacterClick?.invoke(resident)
+                        }
+
                     }
                 }
             }
