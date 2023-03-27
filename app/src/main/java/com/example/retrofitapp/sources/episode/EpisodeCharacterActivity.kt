@@ -1,11 +1,13 @@
 package com.example.retrofitapp.sources.episode
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.retrofitapp.databinding.EpisodeCharacterBinding
 import com.example.retrofitapp.sources.RetrofitInstance
+import com.example.retrofitapp.sources.character.CharacterDetailActivity
 import com.example.retrofitapp.sources.episode.data.ResultsEpisode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -31,6 +33,14 @@ class EpisodeCharacterActivity : AppCompatActivity() {
         episodeCharacterAdapter = EpisodeCharacterAdapter(emptyList())
         binding.episodeCharacterRv.adapter = episodeCharacterAdapter
 
+        episodeCharacterAdapter.onCharacterClick = {
+
+            val intent = Intent(this, CharacterDetailActivity::class.java).apply {
+                putExtra("character_id", it.id)
+            }
+            startActivity(intent)
+
+        }
 
         GlobalScope.launch(Dispatchers.IO) {
             try {

@@ -13,6 +13,8 @@ import com.example.retrofitapp.databinding.ItemDetailBinding
 import com.example.retrofitapp.sources.RetrofitInstance
 import com.example.retrofitapp.sources.character.data.ResultsCharacter
 import com.example.retrofitapp.sources.episode.EpisodeCharacterActivity
+import com.example.retrofitapp.sources.location.LocationCharacterActivity
+import com.example.retrofitapp.sources.location.data.ResultsLocation
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -36,13 +38,20 @@ class CharacterDetailActivity : AppCompatActivity() {
 
 
         episodeAdapter.onEpisodenClick = {
-
             val intent = Intent(this, EpisodeCharacterActivity::class.java).apply {
                 putExtra("episode_id", it.id)
             }
             startActivity(intent)
-
         }
+
+
+        binding.contentCharacter.btnLocation.setOnClickListener {
+            val intent = Intent(this, LocationCharacterActivity::class.java).apply {
+                putExtra("location_id", it.id)
+            }
+            startActivity(intent)
+        }
+
 
         GlobalScope.launch(Dispatchers.IO) {
             try {

@@ -3,6 +3,7 @@ package com.example.retrofitapp.sources.character
 import com.example.retrofitapp.sources.character.data.Character
 import com.example.retrofitapp.sources.character.data.ResultsCharacter
 import com.example.retrofitapp.sources.episode.data.ResultsEpisode
+import com.example.retrofitapp.sources.location.data.ResultsLocation
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -18,5 +19,8 @@ interface CharacterApi {
 
     @GET
     fun getEpisodeUrl(@Url url: String): Call<ResultsEpisode>
+
+    @GET
+    fun getLocationUrl(@Url url: String): Call<ResultsLocation>
 
 }

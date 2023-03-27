@@ -35,6 +35,8 @@ class LocationCharacterActivity : AppCompatActivity() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 val locationId = intent.getIntExtra("location_id", -1)
+                Log.e("RESPONSE", "$locationId")
+
                 RetrofitInstance.api_location.getLocationInfo(locationId).enqueue(object :
                     Callback<ResultsLocation> {
                     override fun onResponse(call: Call<ResultsLocation>, response: Response<ResultsLocation>) {
@@ -47,7 +49,7 @@ class LocationCharacterActivity : AppCompatActivity() {
                         binding.locationCharacterRv.adapter = locationCharacterAdapter.apply {
                             residents = locationInfo?.residents ?: emptyList()
                         }
-
+                        Log.e("RESPONSE", "$locationInfo")
                     }
 
                     override fun onFailure(call: Call<ResultsLocation>, t: Throwable) {

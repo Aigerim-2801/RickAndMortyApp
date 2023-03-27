@@ -14,6 +14,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class EpisodeCharacterAdapter(var charactere: List<String>) : RecyclerView.Adapter<EpisodeCharacterAdapter.EpisodeCharacterViewHolder>() {
+    var onCharacterClick: ((ResultsCharacter) -> Unit)? = null
 
     class EpisodeCharacterViewHolder(val binding: EpisodeCharacterContentBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -47,6 +48,12 @@ class EpisodeCharacterAdapter(var charactere: List<String>) : RecyclerView.Adapt
                         else -> {
                             holder.binding.statusImgEpisodeCharacter.setImageResource(R.drawable.status_unknown)
                         }
+                    }
+                    holder.itemView.setOnClickListener {
+                        if (resident != null) {
+                            onCharacterClick?.invoke(resident)
+                        }
+
                     }
                 }
             }
