@@ -1,7 +1,6 @@
 package com.example.retrofitapp.sources.location
 
 import com.example.retrofitapp.sources.character.data.ResultsCharacter
-import com.example.retrofitapp.sources.episode.data.ResultsEpisode
 import com.example.retrofitapp.sources.location.data.Location
 import com.example.retrofitapp.sources.location.data.ResultsLocation
 import retrofit2.Call
