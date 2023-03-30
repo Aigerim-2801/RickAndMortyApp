@@ -50,13 +50,11 @@ class BottomNavigationActivity : AppCompatActivity() {
                     it.isChecked = true
 
                 }
-
             }
             false
         }
 
     }
-
 }
 
 

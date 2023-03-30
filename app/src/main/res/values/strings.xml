@@ -9,4 +9,8 @@
     <string name="title_character">Characters</string>
     <string name="title_location">Locations</string>
     <string name="title_episode">Episodes</string>
+    <string name="status">Status</string>
+    <string name="apply">Apply</string>
+    <string name="species">Species</string>
+    <string name="name">Name</string>
 </resources>

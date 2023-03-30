@@ -24,6 +24,8 @@ class CharacterDetailActivity : AppCompatActivity() {
     private lateinit var binding: ItemDetailBinding
     private lateinit var episodeAdapter: EpisodeAdapter
 
+    private var currentPage: Int = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ItemDetailBinding.inflate(layoutInflater)
@@ -81,7 +83,7 @@ class CharacterDetailActivity : AppCompatActivity() {
                 })
 
 
-                val response = RetrofitInstance.api_character.getCharacter()
+                val response = RetrofitInstance.api_character.getCharacter(currentPage)
                 withContext(Dispatchers.Main) {
 
                     val dividerItemDecoration = DividerItemDecoration(binding.contentCharacter.episodesRV.context, layoutManager.orientation)

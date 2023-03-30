@@ -2,6 +2,8 @@ package com.example.retrofitapp.sources.character
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.retrofitapp.R
@@ -9,7 +11,18 @@ import com.example.retrofitapp.databinding.ItemsLayoutBinding
 import com.example.retrofitapp.sources.character.data.ResultsCharacter
 
 
-class CharacterAdapter(var character: List<ResultsCharacter>) : RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder>() {
+class CharacterAdapter : RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder>()  {
+
+    private val listOfItem = mutableListOf<ResultsCharacter>()
+
+    fun submit(characters : List<ResultsCharacter>){
+        listOfItem.addAll(characters)
+        notifyDataSetChanged()
+    }
+
+    fun reset(){
+        listOfItem.clear()
+    }
 
     var onCharacterClick: ((ResultsCharacter) -> Unit)? = null
 
@@ -21,7 +34,7 @@ class CharacterAdapter(var character: List<ResultsCharacter>) : RecyclerView.Ada
     }
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
-        val item = character[position]
+        val item = listOfItem[position]
         with(holder) {
                 binding.name.text = item.name
                 binding.status.text = item.status
@@ -50,6 +63,7 @@ class CharacterAdapter(var character: List<ResultsCharacter>) : RecyclerView.Ada
     }
 
     override fun getItemCount(): Int {
-        return character.size
+        return listOfItem.size
     }
+
 }
