@@ -39,13 +39,13 @@
         </activity>
 
         <activity
-            android:name=".sources.location.LocationCharacterActivity"
+            android:name=".sources.location.LocationDetailActivity"
             android:exported="true"
             android:theme="@style/Theme.RetrofitApp.NoActionBar">
         </activity>
 
         <activity
-            android:name=".sources.episode.EpisodeCharacterActivity"
+            android:name=".sources.episode.EpisodeDetailActivity"
             android:exported="true"
             android:theme="@style/Theme.RetrofitApp.NoActionBar">
         </activity>

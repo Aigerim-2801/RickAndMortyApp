@@ -53,7 +53,7 @@
     android:id="@+id/location_character_rv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:listitem="@layout/location_character_content" />
+    tools:listitem="@layout/items_layout" />
 </LinearLayout>
 </layout>
 

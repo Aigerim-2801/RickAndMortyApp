@@ -52,7 +52,6 @@ class BottomSheetCharacter : BottomSheetDialogFragment() {
         binding.genderRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             selectedGender = Gender.values()[checkedId]
         }
-
     }
 
     private fun setupApplyButton() {
@@ -69,5 +68,4 @@ class BottomSheetCharacter : BottomSheetDialogFragment() {
             dismiss()
         }
     }
-
 }

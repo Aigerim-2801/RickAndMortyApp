@@ -2,8 +2,6 @@ package com.example.retrofitapp.sources.character
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.retrofitapp.R
@@ -41,7 +39,6 @@ class CharacterAdapter : RecyclerView.Adapter<CharacterAdapter.CharacterViewHold
                 Glide.with(holder.itemView.context).load(item.image)
                     .into(binding.imageView)
 
-
             when (item.status) {
                 "Alive" -> {
                     binding.statusImg.setImageResource(R.drawable.status_alive)
@@ -57,13 +54,10 @@ class CharacterAdapter : RecyclerView.Adapter<CharacterAdapter.CharacterViewHold
 
         holder.itemView.setOnClickListener {
             onCharacterClick?.invoke(item)
-
-
         }
     }
 
     override fun getItemCount(): Int {
         return listOfItem.size
     }
-
 }

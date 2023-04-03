@@ -1,6 +1,6 @@
 package com.example.retrofitapp.sources.character.data
 
-data class Character(
+data class Characters(
     val info: Info,
     val results: List<ResultsCharacter>
 )

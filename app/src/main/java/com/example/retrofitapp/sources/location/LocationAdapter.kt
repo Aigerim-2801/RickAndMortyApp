@@ -6,9 +6,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.retrofitapp.databinding.LocationDetailBinding
 import com.example.retrofitapp.sources.location.data.ResultsLocation
 
-class LocationAdapter(var location: List<ResultsLocation>) : RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
+class LocationAdapter: RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
 
     var onLocationClick: ((ResultsLocation) -> Unit)? = null
+
+    private val listOfLocations = mutableListOf<ResultsLocation>()
+
+    fun submit(locations: List<ResultsLocation>){
+        listOfLocations.addAll(locations)
+        notifyDataSetChanged()
+    }
 
     class LocationViewHolder(val binding: LocationDetailBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -18,7 +25,7 @@ class LocationAdapter(var location: List<ResultsLocation>) : RecyclerView.Adapte
     }
 
     override fun onBindViewHolder(holder: LocationViewHolder, position: Int) {
-        val item = location[position]
+        val item = listOfLocations[position]
         with(holder) {
             binding.nameLocation.text = item.name
             binding.typeLocation.text = item.type
@@ -30,6 +37,6 @@ class LocationAdapter(var location: List<ResultsLocation>) : RecyclerView.Adapte
     }
 
     override fun getItemCount(): Int {
-        return location.size
+        return listOfLocations.size
     }
 }

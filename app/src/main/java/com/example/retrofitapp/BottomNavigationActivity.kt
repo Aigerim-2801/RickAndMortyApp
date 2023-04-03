@@ -40,7 +40,6 @@ class BottomNavigationActivity : AppCompatActivity() {
                         .replace(R.id.recycler_view_container, fragment)
                         .commit()
                     it.isChecked = true
-
                 }
                 R.id.episode-> {
                     val fragment = EpisodeFragment()
@@ -48,12 +47,10 @@ class BottomNavigationActivity : AppCompatActivity() {
                         .replace(R.id.recycler_view_container, fragment)
                         .commit()
                     it.isChecked = true
-
                 }
             }
             false
         }
-
     }
 }
 
