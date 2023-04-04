@@ -52,9 +52,9 @@ class EpisodeDetailActivity : AppCompatActivity() {
 
     private fun observeCharacter() {
         viewModel.episodes.observe(this) { episodes ->
-            binding.nameEpisodeCharacter.text = episodes?.name
-            binding.airDateEpisodeCharacter.text = episodes?.air_date
-            binding.episodeEpisodeCharacter.text = episodes?.episode
+            binding.nameEpisodeCharacter.text = episodes.name
+            binding.airDateEpisodeCharacter.text = episodes.air_date
+            binding.episodeEpisodeCharacter.text = episodes.episode
         }
     }
 

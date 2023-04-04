@@ -46,9 +46,9 @@ class LocationDetailActivity : AppCompatActivity() {
 
     private fun observeCharacter() {
         viewModel.locations.observe(this) { locations ->
-            binding.typeLocationCharacter.text = locations?.type
-            binding.nameLocationCharacter.text = locations?.name
-            binding.dimensionLocationCharacter.text = locations?.dimension
+            binding.typeLocationCharacter.text = locations.type
+            binding.nameLocationCharacter.text = locations.name
+            binding.dimensionLocationCharacter.text = locations.dimension
 
         }
     }

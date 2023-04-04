@@ -152,11 +152,19 @@
             android:fontFamily="sans-serif"
             android:text="@string/title_episode"/>
 
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/episodesRV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:listitem="@layout/episode_detail" />
+
+        <ProgressBar
+            android:id="@+id/progress_Bar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"/>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

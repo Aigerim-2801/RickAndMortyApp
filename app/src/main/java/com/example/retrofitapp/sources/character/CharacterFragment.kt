@@ -1,20 +1,20 @@
 package com.example.retrofitapp.sources.character
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.retrofitapp.databinding.ActivityMainBinding
 import com.example.retrofitapp.sources.Const
 import com.example.retrofitapp.sources.character.data.FilterCharacter
 import com.example.retrofitapp.sources.character.viewModel.CharacterViewModel
-import kotlinx.coroutines.launch
 
 
 class CharacterFragment : Fragment() {
@@ -61,10 +61,7 @@ class CharacterFragment : Fragment() {
 
         characterAdapter.onCharacterClick = { navigateToDetail(it.id) }
 
-        binding.filter.setOnClickListener {
-            val filterBottomSheet = BottomSheetCharacter()
-            filterBottomSheet.show(parentFragmentManager, Const.FILTER_BOTTOM_SHEET)
-        }
+        binding.filter.setOnClickListener { filterBottomSheet(parentFragmentManager) }
 
         return binding.root
     }
@@ -75,16 +72,16 @@ class CharacterFragment : Fragment() {
     }
 
     fun setFilter(filter: FilterCharacter) {
-        lifecycleScope.launch {
-            try {
-                viewModel.getFilteredCharacter(
-                    filter.name,
-                    filter.status.toString(),
-                    filter.gender.toString(),
-                    filter.species
-                )
-                characterAdapter.reset()
-            } catch (e: Exception) { e.printStackTrace() }
+        try {
+            viewModel.getFilteredCharacter(
+                filter.name,
+                filter.status.toString(),
+                filter.gender.toString(),
+                filter.species
+            )
+            characterAdapter.reset()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -96,5 +93,13 @@ class CharacterFragment : Fragment() {
 
     private fun loadMore() {
         viewModel.getAllCharacters()
+    }
+
+    companion object {
+        private const val FILTER_BOTTOM_SHEET = "FilterBottomSheetDialog"
+        fun filterBottomSheet(fragmentManager: FragmentManager) {
+            val filterBottomSheet = BottomSheetCharacter()
+            return filterBottomSheet.show(fragmentManager, FILTER_BOTTOM_SHEET)
+        }
     }
 }

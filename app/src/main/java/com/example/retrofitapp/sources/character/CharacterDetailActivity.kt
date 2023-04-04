@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
@@ -47,9 +48,13 @@ class CharacterDetailActivity : AppCompatActivity() {
                 is ApiResult.Error -> {
                     val errorMessage = result.message
                     val throwable = result.throwable
-                    Log.e("CharacterDetailActivity", "Error getting character info: $errorMessage", throwable)
+                    Log.e("CharacterDetailActivity", "Error getting episodes of character info: $errorMessage", throwable)
                 }
             }
+        }
+
+        viewModel.isEpisodeLoading.observe(this){ isLoading ->
+            binding.contentCharacter.progressBar.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
         }
 
         observeCharacter()
@@ -84,24 +89,25 @@ class CharacterDetailActivity : AppCompatActivity() {
 
     private fun observeCharacter() {
         viewModel.characterInfoLiveData.observe(this) { character ->
-            Glide.with(this@CharacterDetailActivity).load(character?.image)
+            Glide.with(this@CharacterDetailActivity).load(character.image)
                 .into(binding.imaged)
-            binding.named.text = character?.name
-            binding.statusd.text = character?.status
-            binding.speciesd.text = character?.species
-            binding.contentCharacter.genderd.text = character?.gender
-            binding.contentCharacter.origind.text = character?.origin?.name
-            binding.contentCharacter.locationName.text = character?.location?.name
+            binding.named.text = character.name
+            binding.statusd.text = character.status
+            binding.speciesd.text = character.species
+            binding.contentCharacter.genderd.text = character.gender
+            binding.contentCharacter.origind.text = character.origin.name
+            binding.contentCharacter.locationName.text = character.location.name
             binding.contentCharacter.typed.text =
-                character?.type?.let { viewModel.typeCharacter(it) }
+                character.type.let { viewModel.typeCharacter(it) }
 
             binding.contentCharacter.btnLocation.setOnClickListener {
-                val locationId = character?.location?.url?.let { it1 -> viewModel.getIdUrl(it1) }
-                locationId?.toInt()?.let { it1 -> navigateToLocation(it1) }
+                val locationId = viewModel.getIdUrl(character.location.url)
+                 navigateToLocation(locationId.toInt())
             }
 
         }
     }
+
 
     companion object {
         private const val CHARACTER_ID = "character_id"

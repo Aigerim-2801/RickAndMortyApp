@@ -1,10 +1,12 @@
 package com.example.retrofitapp.sources.episode.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.retrofitapp.sources.character.data.ResultsCharacter
 import com.example.retrofitapp.sources.episode.data.ResultsEpisode
+import com.example.retrofitapp.sources.repository.ApiResult
 import com.example.retrofitapp.sources.repository.RickAndMortyRepository
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,21 +27,23 @@ class EpisodeDetailViewModel(id: Int) : ViewModel() {
     }
 
     private fun getEpisodeInfo(id: Int){
-        val call = rickAndMortyRepository.getEpisodeInfo(id)
-        call.enqueue(object : Callback<ResultsEpisode> {
-            override fun onResponse(
-                call: Call<ResultsEpisode>,
-                response: Response<ResultsEpisode>
-            ) {
-                if (response.isSuccessful) {
-                    _episodes.value = response.body()
-                    response.body()?.characters?.let { getMultipleCharacters(it) }
+        rickAndMortyRepository.getEpisodeInfo(id){ result ->
+            when (result) {
+                is ApiResult.Success -> {
+                    _episodes.value = result.value
+                    result.value.characters.let { getMultipleCharacters(it) }
+                }
+                is ApiResult.Error -> {
+                    val errorMessage = result.message
+                    val throwable = result.throwable
+                    Log.e(
+                        "EpisodeDetailViewModel",
+                        "Error getting episode info: $errorMessage",
+                        throwable
+                    )
                 }
             }
-            override fun onFailure(call: Call<ResultsEpisode>, t: Throwable) {
-                t.printStackTrace()
-            }
-        })
+        }
     }
 
     private fun getMultipleCharacters(urls:List<String>) {

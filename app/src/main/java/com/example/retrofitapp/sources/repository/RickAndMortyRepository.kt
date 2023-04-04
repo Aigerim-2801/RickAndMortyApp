@@ -20,18 +20,51 @@ object RickAndMortyRepository {
 
 //    fun getMultipleEpisodes(ids: String): Call<List<ResultsEpisode>> = rickAndMortyApi.getMultipleEpisodes(ids)
 
-    fun getMultipleEpisode(ids: String): ApiResult<List<ResultsEpisode>> {
+    fun getMultipleEpisode(ids: String, callback: (ApiResult<List<ResultsEpisode>>) -> Unit) {
         val call = rickAndMortyApi.getMultipleEpisodes(ids)
-        return try {
-            val response = call.execute()
-            if (response.isSuccessful) {
-                ApiResult.Success(response.body()!!)
-            } else {
-                ApiResult.Error(response.message(), Throwable())
+        call.enqueue(object : Callback<List<ResultsEpisode>> {
+            override fun onResponse(
+                call: Call<List<ResultsEpisode>>,
+                response: Response<List<ResultsEpisode>>
+            ) {
+                if (response.isSuccessful) {
+                    val data = response.body()
+                    if (data != null) {
+                        callback(ApiResult.Success(data))
+                    }
+                } else {
+                    callback(ApiResult.Error(response.message(), Throwable()))
+                }
             }
-        } catch (e: Exception) {
-            ApiResult.Error(e.message, e)
-        }
+
+            override fun onFailure(call: Call<List<ResultsEpisode>>, t: Throwable) {
+                callback(ApiResult.Error(t.message, t))
+            }
+        })
+    }
+
+
+    fun getEpisodeInfo(id: Int, callback: (ApiResult<ResultsEpisode>) -> Unit) {
+        val call = rickAndMortyApi.getEpisodeInfo(id)
+        call.enqueue(object : Callback<ResultsEpisode> {
+            override fun onResponse(
+                call: Call<ResultsEpisode>,
+                response: Response<ResultsEpisode>
+            ) {
+                if (response.isSuccessful) {
+                    val data = response.body()
+                    if (data != null) {
+                        callback(ApiResult.Success(data))
+                    }
+                } else {
+                    callback(ApiResult.Error(response.message(), Throwable()))
+                }
+            }
+
+            override fun onFailure(call: Call<ResultsEpisode>, t: Throwable) {
+                callback(ApiResult.Error(t.message, t))
+            }
+        })
     }
 
     //    suspend fun getMultipleEpisode(ids: String): ApiResult<List<ResultsEpisode>> {
@@ -45,7 +78,7 @@ object RickAndMortyRepository {
     fun getMultipleCharacters(ids: String): Call<List<ResultsCharacter>> = rickAndMortyApi.getMultipleCharacters(ids)
 
     fun getAllEpisodes(): Call<Episode> = rickAndMortyApi.getAllEpisodes()
-    fun getEpisodeInfo(id: Int): Call<ResultsEpisode> = rickAndMortyApi.getEpisodeInfo(id)
+//    fun getEpisodeInfo(id: Int): Call<ResultsEpisode> = rickAndMortyApi.getEpisodeInfo(id)
 
     fun getAllLocations(): Call<Location> = rickAndMortyApi.getAllLocations()
     fun getLocationInfo(id: Int): Call<ResultsLocation> = rickAndMortyApi.getLocationInfo(id)
