@@ -12,6 +12,7 @@ import retrofit2.Response
 
 class LocationViewModel : ViewModel() {
 
+    private var currentPage = 1
     private val rickAndMortyRepository = RickAndMortyRepository
 
     private val _locations = MutableLiveData<List<ResultsLocation>>()
@@ -21,8 +22,9 @@ class LocationViewModel : ViewModel() {
         getAllLocations()
     }
 
-    private fun getAllLocations(){
-        val call = rickAndMortyRepository.getAllLocations()
+    fun getAllLocations(){
+        val call = rickAndMortyRepository.getAllLocations(currentPage)
+        currentPage++
         call.enqueue(object : Callback<Location> {
             override fun onResponse(
                 call: Call<Location>,

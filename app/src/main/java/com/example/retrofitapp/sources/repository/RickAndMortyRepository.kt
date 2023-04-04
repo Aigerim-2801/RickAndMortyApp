@@ -77,10 +77,10 @@ object RickAndMortyRepository {
 //    }
     fun getMultipleCharacters(ids: String): Call<List<ResultsCharacter>> = rickAndMortyApi.getMultipleCharacters(ids)
 
-    fun getAllEpisodes(): Call<Episode> = rickAndMortyApi.getAllEpisodes()
+    fun getAllEpisodes(page: Int): Call<Episode> = rickAndMortyApi.getAllEpisodes(page)
 //    fun getEpisodeInfo(id: Int): Call<ResultsEpisode> = rickAndMortyApi.getEpisodeInfo(id)
 
-    fun getAllLocations(): Call<Location> = rickAndMortyApi.getAllLocations()
+    fun getAllLocations(page: Int): Call<Location> = rickAndMortyApi.getAllLocations(page)
     fun getLocationInfo(id: Int): Call<ResultsLocation> = rickAndMortyApi.getLocationInfo(id)
 
 }

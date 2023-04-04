@@ -1,6 +1,5 @@
 package com.example.retrofitapp.sources.character
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.retrofitapp.databinding.ActivityMainBinding
-import com.example.retrofitapp.sources.Const
 import com.example.retrofitapp.sources.character.data.FilterCharacter
 import com.example.retrofitapp.sources.character.viewModel.CharacterViewModel
 

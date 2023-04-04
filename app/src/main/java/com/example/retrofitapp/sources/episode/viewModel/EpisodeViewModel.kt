@@ -12,6 +12,7 @@ import retrofit2.Response
 
 class EpisodeViewModel : ViewModel() {
 
+    private var currentPage = 1
     private val rickAndMortyRepository = RickAndMortyRepository
 
     private val _episodes = MutableLiveData<List<ResultsEpisode>>()
@@ -21,8 +22,9 @@ class EpisodeViewModel : ViewModel() {
         getAllEpisodes()
     }
 
-    private fun getAllEpisodes(){
-        val call = rickAndMortyRepository.getAllEpisodes()
+    fun getAllEpisodes(){
+        val call = rickAndMortyRepository.getAllEpisodes(currentPage)
+        currentPage++
         call.enqueue(object : Callback<Episode> {
             override fun onResponse(
                 call: Call<Episode>,

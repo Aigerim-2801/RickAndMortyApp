@@ -33,13 +33,13 @@ interface RickAndMortyApi {
     fun getMultipleEpisodes(@Path("ids") ids: String): Call<List<ResultsEpisode>>
 
     @GET("episode")
-    fun getAllEpisodes(): Call<Episode>
+    fun getAllEpisodes(@Query("page") page: Int): Call<Episode>
 
     @GET("episode/{id}")
     fun getEpisodeInfo(@Path("id") id: Int): Call<ResultsEpisode>
 
     @GET("location")
-    fun getAllLocations(): Call<Location>
+    fun getAllLocations(@Query("page") page: Int): Call<Location>
 
     @GET("location/{id}")
     fun getLocationInfo(@Path("id") id: Int): Call<ResultsLocation>
