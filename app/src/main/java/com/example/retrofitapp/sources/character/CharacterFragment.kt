@@ -13,6 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.retrofitapp.databinding.ActivityMainBinding
 import com.example.retrofitapp.sources.character.data.FilterCharacter
 import com.example.retrofitapp.sources.character.viewModel.CharacterViewModel
+import okhttp3.internal.notify
+import okhttp3.internal.notifyAll
+import okhttp3.internal.toImmutableList
+
 
 class CharacterFragment : Fragment() {
 
@@ -46,17 +50,21 @@ class CharacterFragment : Fragment() {
 
                 val visibleItemCount = layoutManager.childCount
                 val totalItemCount = layoutManager.itemCount
+                val pastVisibleItems = layoutManager.findLastVisibleItemPosition();
                 val firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
 
                 if (loading && totalItemCount > previousTotalItemCount){
+
                     loading = false
                     previousTotalItemCount = totalItemCount
                 }
 
                 if(!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)){
+
                     loadMore()
                     loading = true
                 }
+
             }
         })
 
