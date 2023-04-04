@@ -17,6 +17,7 @@ class CharacterViewModel : ViewModel() {
 
     private val _characterMutableLiveData = MutableLiveData<List<ResultsCharacter>>()
     val characterMutableLiveData: LiveData<List<ResultsCharacter>> = _characterMutableLiveData
+    private val listOfItem = mutableListOf<ResultsCharacter>()
 
 
     init {
@@ -32,8 +33,11 @@ class CharacterViewModel : ViewModel() {
                 response: Response<Characters>
             ) {
                 if (response.isSuccessful) {
-                    _characterMutableLiveData.value = response.body()?.results
-
+                    val result = response.body()?.results
+                    if (result != null) {
+                        listOfItem.addAll(result)
+                        _characterMutableLiveData.value = listOfItem
+                    }
                 }
             }
             override fun onFailure(call: Call<Characters>, t: Throwable) {
@@ -59,6 +63,7 @@ class CharacterViewModel : ViewModel() {
 
                 }
             }
+
             override fun onFailure(call: Call<Characters>, t: Throwable) {
                 t.printStackTrace()
             }

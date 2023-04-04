@@ -35,7 +35,7 @@ class EpisodeDetailActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, viewModelFactory)[EpisodeDetailViewModel::class.java]
 
         viewModel.characterMutableLiveData.observe(this) {
-            characterAdapter.submit(it)
+            characterAdapter.submitList(it)
         }
 
         observeCharacter()

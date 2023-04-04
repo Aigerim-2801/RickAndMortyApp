@@ -14,7 +14,6 @@ import com.example.retrofitapp.databinding.ActivityMainBinding
 import com.example.retrofitapp.sources.character.data.FilterCharacter
 import com.example.retrofitapp.sources.character.viewModel.CharacterViewModel
 
-
 class CharacterFragment : Fragment() {
 
     private var _binding: ActivityMainBinding? = null
@@ -24,7 +23,7 @@ class CharacterFragment : Fragment() {
 
     private var loading = false
     private var previousTotalItemCount = 0
-    private val visibleThreshold = 4
+    private val visibleThreshold = 20
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,19 +37,23 @@ class CharacterFragment : Fragment() {
         binding.recyclerview.adapter = characterAdapter
 
         viewModel.characterMutableLiveData.observe(viewLifecycleOwner) {
-            characterAdapter.submit(it)
+            characterAdapter.submitList(it)
         }
 
         binding.recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
+
+                val visibleItemCount = layoutManager.childCount
                 val totalItemCount = layoutManager.itemCount
-                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
-                if (loading && totalItemCount > previousTotalItemCount) {
+                val firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
+
+                if (loading && totalItemCount > previousTotalItemCount){
                     loading = false
                     previousTotalItemCount = totalItemCount
                 }
-                if (!loading && (lastVisibleItemPosition + visibleThreshold) >= totalItemCount) {
+
+                if(!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)){
                     loadMore()
                     loading = true
                 }
@@ -77,7 +80,7 @@ class CharacterFragment : Fragment() {
                 filter.gender.toString(),
                 filter.species
             )
-            characterAdapter.reset()
+//            characterAdapter.reset()
         } catch (e: Exception) {
             e.printStackTrace()
         }

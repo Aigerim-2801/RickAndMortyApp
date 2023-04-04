@@ -36,7 +36,7 @@ class LocationDetailActivity : AppCompatActivity() {
 
 
         viewModel.characterMutableLiveData.observe(this) {
-            characterAdapter.submit(it)
+            characterAdapter.submitList(it)
         }
 
         observeCharacter()

@@ -2,6 +2,8 @@ package com.example.retrofitapp.sources.character
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.retrofitapp.R
@@ -9,22 +11,14 @@ import com.example.retrofitapp.databinding.ItemsLayoutBinding
 import com.example.retrofitapp.sources.character.data.ResultsCharacter
 
 
-class CharacterAdapter : RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder>()  {
-
-    private val listOfItem = mutableListOf<ResultsCharacter>()
-
-    fun submit(characters : List<ResultsCharacter>){
-        listOfItem.addAll(characters)
-        notifyDataSetChanged()
-    }
-
-    fun reset(){
-        listOfItem.clear()
-    }
+class CharacterAdapter : ListAdapter<ResultsCharacter, CharacterAdapter.CharacterViewHolder>(CharacterDiffCallback()) {
 
     var onCharacterClick: ((ResultsCharacter) -> Unit)? = null
 
-    class CharacterViewHolder(val binding: ItemsLayoutBinding) : RecyclerView.ViewHolder(binding.root)
+
+    class CharacterViewHolder(val binding: ItemsLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root)
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
         val binding = ItemsLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -32,32 +26,45 @@ class CharacterAdapter : RecyclerView.Adapter<CharacterAdapter.CharacterViewHold
     }
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
-        val item = listOfItem[position]
-        with(holder) {
-                binding.name.text = item.name
-                binding.status.text = item.status
-                Glide.with(holder.itemView.context).load(item.image)
-                    .into(binding.imageView)
+        val character = getItem(position)
+        holder.binding.apply {
+            name.text = character.name
+            status.text = character.status
+            Glide.with(holder.itemView.context).load(character.image)
+                .into(imageView)
 
-            when (item.status) {
+            when (character.status) {
                 "Alive" -> {
-                    binding.statusImg.setImageResource(R.drawable.status_alive)
+                    statusImg.setImageResource(R.drawable.status_alive)
                 }
                 "Dead" -> {
-                    binding.statusImg.setImageResource(R.drawable.status_dead)
+                    statusImg.setImageResource(R.drawable.status_dead)
                 }
                 else -> {
-                    binding.statusImg.setImageResource(R.drawable.status_unknown)
+                    statusImg.setImageResource(R.drawable.status_unknown)
                 }
             }
         }
-
         holder.itemView.setOnClickListener {
-            onCharacterClick?.invoke(item)
+            onCharacterClick?.invoke(character)
         }
     }
 
-    override fun getItemCount(): Int {
-        return listOfItem.size
+    class CharacterDiffCallback : DiffUtil.ItemCallback<ResultsCharacter>() {
+        override fun areItemsTheSame(
+            oldItem: ResultsCharacter,
+            newItem: ResultsCharacter
+        ): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(
+            oldItem: ResultsCharacter,
+            newItem: ResultsCharacter
+        ): Boolean {
+            return oldItem == newItem
+        }
     }
 }
+
+
