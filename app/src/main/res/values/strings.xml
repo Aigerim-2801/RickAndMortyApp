@@ -15,4 +15,7 @@
     <string name="name">Name</string>
     <string name="deleted">Character is deleted</string>
     <string name="cancel">Cancel</string>
+    <string name="filter">filter</string>
+    <string name="comment_filter">You need to select both status and gender</string>
+    <string name="undo">UNDO</string>
 </resources>

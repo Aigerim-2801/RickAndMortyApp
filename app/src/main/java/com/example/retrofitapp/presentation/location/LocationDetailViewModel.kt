@@ -1,0 +1,69 @@
+package com.example.retrofitapp.presentation.location
+
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.example.retrofitapp.domain.model.character.ResultsCharacter
+import com.example.retrofitapp.domain.model.location.ResultsLocation
+import com.example.retrofitapp.data.repository.ApiResult
+import com.example.retrofitapp.data.repository.RickAndMortyRepository
+
+class LocationDetailViewModel(id: Int) : ViewModel() {
+
+    private val rickAndMortyRepository = RickAndMortyRepository
+
+    private val _characterMutableLiveData = MutableLiveData<List<ResultsCharacter>>()
+    val characterMutableLiveData: LiveData<List<ResultsCharacter>> = _characterMutableLiveData
+
+    private val _locations = MutableLiveData<ResultsLocation>()
+    val locations: LiveData<ResultsLocation> = _locations
+
+    init {
+        getLocationInfo(id)
+    }
+
+    private fun getLocationInfo(id: Int){
+        rickAndMortyRepository.getLocationInfo(id){ result ->
+            when (result) {
+                is ApiResult.Success -> {
+                    _locations.value = result.value
+                    getMultipleCharacters(result.value.residents)
+                }
+                is ApiResult.Error -> {
+                    val errorMessage = result.message
+                    val throwable = result.throwable
+                    Log.e(
+                        "LocationDetailViewModel",
+                        "Error getting location info: $errorMessage",
+                        throwable
+                    )
+                }
+            }
+        }
+    }
+
+    private fun getMultipleCharacters(urls: List<String>) {
+        if (urls.isNotEmpty()) {
+            val lastElements = urls.map { it.substring(it.lastIndexOf("/") + 1) }
+            val ids = lastElements.joinToString(separator = ",")
+            rickAndMortyRepository.getMultipleCharacters(ids) { result ->
+                when (result) {
+                    is ApiResult.Success -> {
+                        _characterMutableLiveData.value = result.value
+                    }
+                    is ApiResult.Error -> {
+                        val errorMessage = result.message
+                        val throwable = result.throwable
+                        Log.e(
+                            "LocationDetailViewModel",
+                            "Error getting characters of location: $errorMessage",
+                            throwable
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+}

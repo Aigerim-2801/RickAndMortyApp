@@ -15,7 +15,7 @@
         android:theme="@style/Theme.RetrofitApp"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true"
             android:label="@string/title_activity_bottom_navigation">
 
@@ -32,20 +32,20 @@
 
 
         <activity
-            android:name=".sources.character.CharacterDetailActivity"
+            android:name=".presentation.character.CharacterDetailActivity"
             android:exported="true"
             android:theme="@style/Theme.RetrofitApp.NoActionBar">
 
         </activity>
 
         <activity
-            android:name=".sources.location.LocationDetailActivity"
+            android:name=".presentation.location.LocationDetailActivity"
             android:exported="true"
             android:theme="@style/Theme.RetrofitApp.NoActionBar">
         </activity>
 
         <activity
-            android:name=".sources.episode.EpisodeDetailActivity"
+            android:name=".presentation.episode.EpisodeDetailActivity"
             android:exported="true"
             android:theme="@style/Theme.RetrofitApp.NoActionBar">
         </activity>

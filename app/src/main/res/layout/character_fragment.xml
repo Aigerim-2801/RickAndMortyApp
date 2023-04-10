@@ -6,23 +6,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".sources.character.CharacterFragment">
+    android:layout_marginBottom="75dp"
+    tools:context=".presentation.character.CharacterFragment">
 
     <Button
-        android:id="@+id/filter"
+        android:id="@+id/filter_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="filter"
+        android:text="@string/filter"
         android:layout_margin="10dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
-        android:id="@+id/recyclerview"
+        android:id="@+id/character_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/character_item" />
-
-
 </LinearLayout>
 </layout>

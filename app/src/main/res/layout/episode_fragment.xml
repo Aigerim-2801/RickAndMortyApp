@@ -6,11 +6,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginBottom="75dp"
-        tools:context=".sources.episode.EpisodeFragment">
+        tools:context=".presentation.episode.EpisodeFragment">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/episodesRv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/episode_detail" />
+            tools:listitem="@layout/episode_item" />
     </LinearLayout>
 </layout>
