@@ -14,6 +14,8 @@ import retrofit2.Response
 
 class EpisodeDetailViewModel(id: Int) : ViewModel() {
 
+    private val listOfItem = mutableListOf<ResultsCharacter>()
+
     private val rickAndMortyRepository = RickAndMortyRepository
 
     private val _characterMutableLiveData = MutableLiveData<List<ResultsCharacter>>()
@@ -65,5 +67,8 @@ class EpisodeDetailViewModel(id: Int) : ViewModel() {
                 }
             })
         }
+    }
+    fun deleteCharacter(position: Int){
+        listOfItem.removeAt(position)
     }
 }

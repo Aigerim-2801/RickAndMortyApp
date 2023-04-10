@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.retrofitapp.R
-import com.example.retrofitapp.databinding.ItemDetailBinding
+import com.example.retrofitapp.databinding.CharacterDetailBinding
 import com.example.retrofitapp.sources.character.viewModel.CharacterDetailViewModel
 import com.example.retrofitapp.sources.character.viewModel.ViewModelFactory
 import com.example.retrofitapp.sources.episode.EpisodeAdapter
@@ -22,13 +22,13 @@ import com.example.retrofitapp.sources.repository.ApiResult
 
 class CharacterDetailActivity : AppCompatActivity() {
 
-    private lateinit var binding: ItemDetailBinding
+    private lateinit var binding: CharacterDetailBinding
     private val episodeAdapter = EpisodeAdapter()
     private lateinit var viewModel: CharacterDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ItemDetailBinding.inflate(layoutInflater)
+        binding = CharacterDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val layoutManager = LinearLayoutManager(this)

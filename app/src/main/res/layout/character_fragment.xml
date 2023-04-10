@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_marginBottom="75dp"
     tools:context=".sources.character.CharacterFragment">
 
     <Button
@@ -22,7 +21,8 @@
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/items_layout" />
+        tools:listitem="@layout/character_item" />
+
 
 </LinearLayout>
 </layout>

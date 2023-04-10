@@ -2,9 +2,9 @@ package com.example.retrofitapp.sources.remote
 
 import com.example.retrofitapp.sources.character.data.Characters
 import com.example.retrofitapp.sources.character.data.ResultsCharacter
-import com.example.retrofitapp.sources.episode.data.Episode
+import com.example.retrofitapp.sources.episode.data.Episodes
 import com.example.retrofitapp.sources.episode.data.ResultsEpisode
-import com.example.retrofitapp.sources.location.data.Location
+import com.example.retrofitapp.sources.location.data.Locations
 import com.example.retrofitapp.sources.location.data.ResultsLocation
 import retrofit2.Call
 import retrofit2.http.GET
@@ -20,7 +20,8 @@ interface RickAndMortyApi {
         @Query("name") name: String,
         @Query("status") status: String,
         @Query("gender") gender: String,
-        @Query("species") species: String
+        @Query("species") species: String,
+        @Query("page") page: Int
     ): Call<Characters>
 
     @GET("character/{id}")
@@ -33,13 +34,13 @@ interface RickAndMortyApi {
     fun getMultipleEpisodes(@Path("ids") ids: String): Call<List<ResultsEpisode>>
 
     @GET("episode")
-    fun getAllEpisodes(@Query("page") page: Int): Call<Episode>
+    fun getAllEpisodes(@Query("page") page: Int): Call<Episodes>
 
     @GET("episode/{id}")
     fun getEpisodeInfo(@Path("id") id: Int): Call<ResultsEpisode>
 
     @GET("location")
-    fun getAllLocations(@Query("page") page: Int): Call<Location>
+    fun getAllLocations(@Query("page") page: Int): Call<Locations>
 
     @GET("location/{id}")
     fun getLocationInfo(@Path("id") id: Int): Call<ResultsLocation>

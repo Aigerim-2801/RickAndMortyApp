@@ -3,16 +3,16 @@
 
     <item
         android:id="@+id/character"
-        android:icon="@drawable/character_24px"
+        android:icon="@drawable/character"
         android:title="@string/title_character" />
 
     <item
         android:id="@+id/location"
-        android:icon="@drawable/location_24px"
+        android:icon="@drawable/location"
         android:title="@string/title_location" />
 
     <item
         android:id="@+id/episode"
-        android:icon="@drawable/episode_24px"
+        android:icon="@drawable/episode"
         android:title="@string/title_episode"/>
 </menu>

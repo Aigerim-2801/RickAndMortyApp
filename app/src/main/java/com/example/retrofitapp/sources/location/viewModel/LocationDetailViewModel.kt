@@ -20,6 +20,8 @@ class LocationDetailViewModel(id: Int) : ViewModel() {
     private val _locations = MutableLiveData<ResultsLocation>()
     val locations: LiveData<ResultsLocation> = _locations
 
+    private val listOfItem = mutableListOf<ResultsCharacter>()
+
     init {
         getLocationInfo(id)
     }
@@ -61,5 +63,9 @@ class LocationDetailViewModel(id: Int) : ViewModel() {
                 }
             })
         }
+    }
+
+    fun deleteCharacter(position: Int){
+        listOfItem.removeAt(position)
     }
 }

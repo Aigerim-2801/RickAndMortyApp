@@ -15,7 +15,7 @@
         android:theme="@style/Theme.RetrofitApp"
         tools:targetApi="31">
         <activity
-            android:name=".BottomNavigationActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:label="@string/title_activity_bottom_navigation">
 

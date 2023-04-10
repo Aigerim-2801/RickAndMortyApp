@@ -2,19 +2,19 @@ package com.example.retrofitapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.retrofitapp.databinding.ActivityBottomNavigationBinding
+import com.example.retrofitapp.databinding.MainActivityBinding
 import com.example.retrofitapp.sources.character.CharacterFragment
 import com.example.retrofitapp.sources.episode.EpisodeFragment
 import com.example.retrofitapp.sources.location.LocationFragment
 
-class BottomNavigationActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityBottomNavigationBinding
+    private lateinit var binding: MainActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityBottomNavigationBinding.inflate(layoutInflater)
+        binding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         if (savedInstanceState == null) {

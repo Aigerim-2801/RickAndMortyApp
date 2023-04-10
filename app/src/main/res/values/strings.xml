@@ -13,4 +13,6 @@
     <string name="apply">Apply</string>
     <string name="species">Species</string>
     <string name="name">Name</string>
+    <string name="deleted">Character is deleted</string>
+    <string name="cancel">Cancel</string>
 </resources>

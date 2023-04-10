@@ -3,7 +3,7 @@ package com.example.retrofitapp.sources.episode.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.retrofitapp.sources.episode.data.Episode
+import com.example.retrofitapp.sources.episode.data.Episodes
 import com.example.retrofitapp.sources.episode.data.ResultsEpisode
 import com.example.retrofitapp.sources.repository.RickAndMortyRepository
 import retrofit2.Call
@@ -25,16 +25,16 @@ class EpisodeViewModel : ViewModel() {
     fun getAllEpisodes(){
         val call = rickAndMortyRepository.getAllEpisodes(currentPage)
         currentPage++
-        call.enqueue(object : Callback<Episode> {
+        call.enqueue(object : Callback<Episodes> {
             override fun onResponse(
-                call: Call<Episode>,
-                response: Response<Episode>
+                call: Call<Episodes>,
+                response: Response<Episodes>
             ) {
                 if (response.isSuccessful) {
                     _episodes.value = response.body()?.results
                 }
             }
-            override fun onFailure(call: Call<Episode>, t: Throwable) {
+            override fun onFailure(call: Call<Episodes>, t: Throwable) {
                 t.printStackTrace()
             }
         })

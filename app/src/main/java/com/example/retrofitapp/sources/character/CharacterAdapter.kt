@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.retrofitapp.R
-import com.example.retrofitapp.databinding.ItemsLayoutBinding
+import com.example.retrofitapp.databinding.CharacterItemBinding
 import com.example.retrofitapp.sources.character.data.ResultsCharacter
 
 
@@ -15,13 +15,14 @@ class CharacterAdapter : ListAdapter<ResultsCharacter, CharacterAdapter.Characte
 
     var onCharacterClick: ((ResultsCharacter) -> Unit)? = null
 
+    var onCharacterDelete: ((ResultsCharacter) -> Unit)? = null
 
-    class CharacterViewHolder(val binding: ItemsLayoutBinding) :
+    class CharacterViewHolder(val binding: CharacterItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
-        val binding = ItemsLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = CharacterItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CharacterViewHolder(binding)
     }
 
@@ -44,7 +45,12 @@ class CharacterAdapter : ListAdapter<ResultsCharacter, CharacterAdapter.Characte
                     statusImg.setImageResource(R.drawable.status_unknown)
                 }
             }
+
+            deleteBtn.setOnClickListener {
+                onCharacterDelete?.invoke(character)
+            }
         }
+
         holder.itemView.setOnClickListener {
             onCharacterClick?.invoke(character)
         }
@@ -65,6 +71,8 @@ class CharacterAdapter : ListAdapter<ResultsCharacter, CharacterAdapter.Characte
             return oldItem == newItem
         }
     }
+
+
 }
 
 

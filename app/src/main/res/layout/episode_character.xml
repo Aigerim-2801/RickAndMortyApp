@@ -51,7 +51,7 @@
             android:id="@+id/episode_character_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/items_layout" />
+            tools:listitem="@layout/character_item" />
     </LinearLayout>
 </layout>
 

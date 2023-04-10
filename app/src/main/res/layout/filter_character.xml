@@ -23,6 +23,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/search_name"
                 android:layout_width="match_parent"
+                android:imeOptions="actionDone"
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:background="@color/white" />
@@ -84,6 +85,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/apply"
+            android:layout_margin="10dp" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
             android:layout_margin="10dp" />
     </LinearLayout>
 </layout>
