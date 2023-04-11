@@ -1,6 +1,5 @@
 package com.example.retrofitapp.presentation.location
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -77,8 +76,10 @@ class LocationFragment : Fragment(R.layout.location_item) {
     }
 
     private fun navigateToDetail(id: Int){
-        val intent = LocationDetailActivity.startLocationIntent(requireContext(), id)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(intent)
+        val fragment = LocationDetailFragment.startLocationFragment(id)
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.recycler_view_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

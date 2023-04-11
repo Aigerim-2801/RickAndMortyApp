@@ -4,8 +4,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.MainActivityBinding
+import com.example.retrofitapp.presentation.character.CharacterDetailFragment
 import com.example.retrofitapp.presentation.character.CharacterFragment
+import com.example.retrofitapp.presentation.episode.EpisodeDetailFragment
 import com.example.retrofitapp.presentation.episode.EpisodeFragment
+import com.example.retrofitapp.presentation.location.LocationDetailFragment
 import com.example.retrofitapp.presentation.location.LocationFragment
 
 class MainActivity : AppCompatActivity() {
@@ -51,6 +54,17 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             false
+        }
+    }
+
+    override fun onBackPressed() {
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.recycler_view_container)
+        if (currentFragment is LocationFragment || currentFragment is EpisodeFragment|| currentFragment is LocationDetailFragment || currentFragment is EpisodeDetailFragment || currentFragment is CharacterDetailFragment) {
+            val fragment = CharacterFragment()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.recycler_view_container, fragment)
+                .commit()
+            binding.bottomNavigationView.menu.findItem(R.id.character).isChecked = true
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.example.retrofitapp.presentation.episode
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -89,9 +88,10 @@ class EpisodeFragment : Fragment(){
     }
 
     private fun navigateToDetail(id: Int) {
-        val intent = EpisodeDetailActivity.startEpisodeIntent(requireContext(), id)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(intent)
+        val fragment = EpisodeDetailFragment.startEpisodeFragment(id)
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.recycler_view_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
-
 }

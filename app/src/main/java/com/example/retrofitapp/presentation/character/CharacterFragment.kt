@@ -1,6 +1,5 @@
 package com.example.retrofitapp.presentation.character
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.CharacterFragmentBinding
-import com.example.retrofitapp.presentation.FilterBottomSheet
+import com.example.retrofitapp.presentation.FilterBottomSheetFragment
 import com.example.retrofitapp.adapters.CharacterAdapter
 import com.example.retrofitapp.domain.model.character.FilterCharacters
 import com.google.android.material.snackbar.Snackbar
@@ -86,9 +85,9 @@ class CharacterFragment : Fragment() {
             val bundle = Bundle()
             bundle.putSerializable("FilterCharacters", filterCharacters)
 
-            val filterBottomSheet = FilterBottomSheet()
-            filterBottomSheet.arguments = bundle
-            filterBottomSheet.show(parentFragmentManager, "FilterBottomSheetDialog")
+            val filterBottomSheetFragment = FilterBottomSheetFragment()
+            filterBottomSheetFragment.arguments = bundle
+            filterBottomSheetFragment.show(parentFragmentManager, "FilterBottomSheetDialog")
         }
 
         return binding.root
@@ -110,9 +109,11 @@ class CharacterFragment : Fragment() {
     }
 
     private fun navigateToDetail(id: Int) {
-        val intent = CharacterDetailActivity.startCharacterDetailIntent(requireContext(), id)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(intent)
+        val fragment = CharacterDetailFragment.startCharacterFragment(id)
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.recycler_view_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun snackbarType(snackbar: Snackbar){

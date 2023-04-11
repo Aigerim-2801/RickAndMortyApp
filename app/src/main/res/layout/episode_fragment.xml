@@ -6,6 +6,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginBottom="75dp"
+        android:layout_marginTop="20dp"
         tools:context=".presentation.episode.EpisodeFragment">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/episodesRv"

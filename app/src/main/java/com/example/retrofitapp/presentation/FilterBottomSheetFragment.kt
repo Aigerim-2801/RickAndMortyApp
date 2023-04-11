@@ -16,7 +16,7 @@ import com.example.retrofitapp.domain.model.character.Status
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.io.Serializable
 
-class FilterBottomSheet : BottomSheetDialogFragment() {
+class FilterBottomSheetFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FilterBottomSheetBinding
 
     private var selectedStatus: Status? = null
