@@ -2,7 +2,7 @@
 ## *Clean Architecture*
 ## *Single-Activity Architecture*
 ## *MVVM*
-## *View Binding*
+### *View Binding*
 ### *Logging Interceptor*
 ### *Handling api responses*
 ### *Bottom Sheet Dialog*
