@@ -1,5 +1,7 @@
 package com.example.retrofitapp.data.repository
 
+import android.content.Context
+import com.example.retrofitapp.data.utils.DBHelper
 import com.example.retrofitapp.data.utils.RetrofitInstance
 import com.example.retrofitapp.domain.model.character.Characters
 import com.example.retrofitapp.domain.model.character.ResultsCharacter
@@ -14,6 +16,7 @@ import retrofit2.Response
 object RickAndMortyRepository {
 
     private val rickAndMortyApi = RetrofitInstance.getRickAndMortyApi()
+
 
     fun getAllCharacters(page: Int, callback: (ApiResult<Characters>) -> Unit) {
         val call = rickAndMortyApi.getAllCharacters(page)
@@ -221,4 +224,19 @@ object RickAndMortyRepository {
             }
         })
     }
+
+    fun save(dbHelper: DBHelper, character: ResultsCharacter) {
+        character.isFavorite = true
+        dbHelper.save(character)
+    }
+
+    fun remove(dbHelper: DBHelper, character: ResultsCharacter) {
+        character.isFavorite = false
+        dbHelper.remove(character)
+    }
+
+    fun getAllFavorite(dbHelper: DBHelper): List<ResultsCharacter> {
+        return dbHelper.getAllFavoriteItems()
+    }
+
 }

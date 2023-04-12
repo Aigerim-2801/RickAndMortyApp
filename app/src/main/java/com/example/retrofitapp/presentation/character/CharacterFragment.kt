@@ -13,6 +13,7 @@ import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.CharacterFragmentBinding
 import com.example.retrofitapp.presentation.FilterBottomSheetFragment
 import com.example.retrofitapp.adapters.CharacterAdapter
+import com.example.retrofitapp.data.utils.DBHelper
 import com.example.retrofitapp.domain.model.character.FilterCharacters
 import com.google.android.material.snackbar.Snackbar
 
@@ -70,6 +71,9 @@ class CharacterFragment : Fragment() {
         })
 
         characterAdapter.onCharacterClick = { navigateToDetail(it.id) }
+
+        val dbHelper = DBHelper(requireContext())
+        characterAdapter.onFavoriteClick = { viewModel.checkFlag(it.isFavorite, dbHelper, it) }
 
         characterAdapter.onCharacterDeleteClick = { characterItem ->
             val position = viewModel.deleteCharacter(characterItem)

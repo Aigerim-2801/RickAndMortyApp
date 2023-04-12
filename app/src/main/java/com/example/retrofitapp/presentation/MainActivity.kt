@@ -52,6 +52,13 @@ class MainActivity : AppCompatActivity() {
                         .commit()
                     it.isChecked = true
                 }
+                R.id.favorite -> {
+                    val fragment = FavoriteFragment()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.recycler_view_container, fragment)
+                        .commit()
+                    it.isChecked = true
+                }
             }
             false
         }

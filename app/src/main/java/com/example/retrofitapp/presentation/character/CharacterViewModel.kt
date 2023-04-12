@@ -8,6 +8,7 @@ import com.example.retrofitapp.domain.model.character.FilterCharacters
 import com.example.retrofitapp.domain.model.character.ResultsCharacter
 import com.example.retrofitapp.data.repository.ApiResult
 import com.example.retrofitapp.data.repository.RickAndMortyRepository
+import com.example.retrofitapp.data.utils.DBHelper
 
 class CharacterViewModel : ViewModel() {
 
@@ -120,5 +121,21 @@ class CharacterViewModel : ViewModel() {
     fun cancelFilter(){
         currentPage = 1
         getAllCharacters()
+    }
+
+
+    fun updateFavoriteCharacters(dbHelper: DBHelper) {
+        listOfItem.addAll(rickAndMortyRepository.getAllFavorite(dbHelper))
+        _characterMutableLiveData.value = listOfItem
+    }
+
+    fun checkFlag(isFavorite: Boolean, dbHelper: DBHelper, resultsCharacter: ResultsCharacter){
+        if(!isFavorite){
+            rickAndMortyRepository.save(dbHelper, resultsCharacter)
+        }else{
+            rickAndMortyRepository.remove(dbHelper, resultsCharacter)
+        }
+        listOfItem.addAll(rickAndMortyRepository.getAllFavorite(dbHelper))
+        _characterMutableLiveData.value = listOfItem
     }
 }

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "531561193051",
+    "firebase_url": "https://retrofitapp-2a0c0-default-rtdb.firebaseio.com",
+    "project_id": "retrofitapp-2a0c0",
+    "storage_bucket": "retrofitapp-2a0c0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531561193051:android:da210cb422739bf093e97e",
+        "android_client_info": {
+          "package_name": "com.example.retrofitapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "531561193051-5mpbc8m672fdscpag0nv8579o47eklhs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEkW9xFKlOKbOGmpJQgW96OqWOJmcSs9M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "531561193051-5mpbc8m672fdscpag0nv8579o47eklhs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

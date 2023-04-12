@@ -15,4 +15,9 @@
         android:id="@+id/episode"
         android:icon="@drawable/episode"
         android:title="@string/title_episode"/>
+
+    <item
+        android:id="@+id/favorite"
+        android:icon="@drawable/favorite"
+        android:title="@string/favorite"/>
 </menu>

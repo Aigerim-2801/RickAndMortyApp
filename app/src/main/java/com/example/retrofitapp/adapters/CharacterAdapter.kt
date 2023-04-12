@@ -1,5 +1,8 @@
 package com.example.retrofitapp.adapters
 
+import com.example.retrofitapp.data.utils.DBHelper
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -19,6 +22,8 @@ class CharacterAdapter : ListAdapter<ResultsCharacter, CharacterAdapter.Characte
 
     var onCharacterDeleteClick: ((ResultsCharacter) -> Unit)? = null
 
+    var onFavoriteClick: ((ResultsCharacter) -> Unit)? = null
+
     class CharacterViewHolder(val binding: CharacterItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -29,6 +34,8 @@ class CharacterAdapter : ListAdapter<ResultsCharacter, CharacterAdapter.Characte
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         val character = getItem(position)
+        val dbHelper = DBHelper(holder.itemView.context)
+
         holder.binding.apply {
             nameTv.text = character.name
             status.text = character.status
@@ -49,6 +56,17 @@ class CharacterAdapter : ListAdapter<ResultsCharacter, CharacterAdapter.Characte
 
             deleteBtn.setOnClickListener {
                 onCharacterDeleteClick?.invoke(character)
+            }
+
+            if (character.isFavorite) {
+                favoriteBtn.imageTintList = ColorStateList.valueOf(Color.RED)
+            } else {
+                favoriteBtn.imageTintList = ColorStateList.valueOf(Color.BLACK)
+            }
+
+            favoriteBtn.setOnClickListener {
+                favoriteBtn.imageTintList = ColorStateList.valueOf(Color.RED)
+                onFavoriteClick?.invoke(character)
             }
         }
 

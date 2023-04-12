@@ -12,5 +12,6 @@ data class ResultsCharacter(
     val image: String,
     val episode: List<String>,
     val url: String,
-    val created: String
+    val created: String,
+    var isFavorite: Boolean
 )
