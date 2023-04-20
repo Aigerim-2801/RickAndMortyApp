@@ -1,6 +1,7 @@
 # **RetrofitApp**
 ## *Clean Architecture*
 ## *Single-Activity Architecture*
+## *Observer, Singelton patterns*
 ## *MVVM*
 ### *View Binding*
 ### *Logging Interceptor*
@@ -12,6 +13,7 @@
 ### *Saving selected filter and throw it*
 ### *Snackbar for delete and undo*
 
+### *SQLite*
 
 
 
