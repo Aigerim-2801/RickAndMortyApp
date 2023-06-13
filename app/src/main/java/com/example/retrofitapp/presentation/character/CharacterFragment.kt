@@ -9,10 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.CharacterFragmentBinding
 import com.example.retrofitapp.presentation.FilterBottomSheetFragment
 import com.example.retrofitapp.adapters.CharacterAdapter
+import com.example.retrofitapp.data.remote.CharactersDao
+import com.example.retrofitapp.data.utils.CharactersDatabase
 import com.example.retrofitapp.domain.model.character.FilterCharacters
 import com.google.android.material.snackbar.Snackbar
 
@@ -27,6 +30,7 @@ class CharacterFragment : Fragment() {
     private var loading = false
     private var previousTotalItemCount = 0
     private var visibleThreshold = 80
+    private lateinit var charactersDao: CharactersDao
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,6 +72,11 @@ class CharacterFragment : Fragment() {
                 }
             }
         })
+
+        val db: CharactersDatabase = Room.databaseBuilder(requireContext(), CharactersDatabase::class.java, "CharactersFavoriteDatabase").allowMainThreadQueries().build()
+
+        charactersDao = db.getCharactersDao()
+        characterAdapter.onFavoriteClick = { viewModel.checkFlag(it.isFavorite, charactersDao, it) }
 
         characterAdapter.onCharacterClick = { navigateToDetail(it.id) }
 

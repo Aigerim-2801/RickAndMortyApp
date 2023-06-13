@@ -1,5 +1,7 @@
 package com.example.retrofitapp.adapters
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -14,10 +16,11 @@ import com.example.retrofitapp.domain.model.character.ResultsCharacter
 class CharacterAdapter : ListAdapter<ResultsCharacter, CharacterAdapter.CharacterViewHolder>(
     CharacterDiffCallback()
 ) {
-
     var onCharacterClick: ((ResultsCharacter) -> Unit)? = null
 
     var onCharacterDeleteClick: ((ResultsCharacter) -> Unit)? = null
+
+    var onFavoriteClick: ((ResultsCharacter) -> Unit)? = null
 
     class CharacterViewHolder(val binding: CharacterItemBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -49,6 +52,17 @@ class CharacterAdapter : ListAdapter<ResultsCharacter, CharacterAdapter.Characte
 
             deleteBtn.setOnClickListener {
                 onCharacterDeleteClick?.invoke(character)
+            }
+
+            if (character.isFavorite) {
+                favoriteBtn.imageTintList = ColorStateList.valueOf(Color.RED)
+            } else {
+                favoriteBtn.imageTintList = ColorStateList.valueOf(Color.BLACK)
+            }
+
+            favoriteBtn.setOnClickListener {
+                favoriteBtn.imageTintList = ColorStateList.valueOf(Color.RED)
+                onFavoriteClick?.invoke(character)
             }
         }
 

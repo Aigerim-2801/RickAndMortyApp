@@ -65,10 +65,16 @@
 
                 <ImageButton
                     android:id="@+id/delete_btn"
-                    android:layout_width="15dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="5dp"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginStart="2dp"
                     android:src="@drawable/delete_btn"/>
+                <ImageButton
+                    android:id="@+id/favorite_btn"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginStart="2dp"
+                    android:src="@drawable/favorite"/>
             </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

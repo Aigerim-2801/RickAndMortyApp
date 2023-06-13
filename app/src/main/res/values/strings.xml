@@ -17,4 +17,5 @@
     <string name="filter">filter</string>
     <string name="comment_filter">You need to select both status and gender</string>
     <string name="undo">UNDO</string>
+    <string name="favorite">Favorite</string>
 </resources>

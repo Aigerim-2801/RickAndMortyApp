@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.retrofitapp.data.remote.CharactersDao
 import com.example.retrofitapp.domain.model.character.FilterCharacters
 import com.example.retrofitapp.domain.model.character.ResultsCharacter
 import com.example.retrofitapp.data.repository.ApiResult
@@ -120,5 +121,22 @@ class CharacterViewModel : ViewModel() {
     fun cancelFilter(){
         currentPage = 1
         getAllCharacters()
+    }
+
+
+    fun updateFavoriteCharacters(dao: CharactersDao) {
+        listOfItem.addAll(dao.getAll())
+        _characterMutableLiveData.value = listOfItem
+    }
+
+    fun checkFlag(isFavorite: Boolean, dao: CharactersDao, character: ResultsCharacter){
+        if(!isFavorite){
+            character.isFavorite = true
+            dao.insert(character)
+        }else{
+            character.isFavorite = false
+            dao.delete(character)
+        }
+//        updateFavoriteCharacters(dao)
     }
 }
