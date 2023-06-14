@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.room.Room
+import com.example.retrofitapp.R
 import com.example.retrofitapp.adapters.CharacterAdapter
 import com.example.retrofitapp.data.remote.CharactersDao
 import com.example.retrofitapp.data.utils.CharactersDatabase
@@ -40,6 +42,14 @@ class FavoriteFragment : Fragment() {
         binding.favoriteRv.adapter = characterAdapter
 
         update()
+
+        characterAdapter.onCharacterClick = { character ->
+            val bundle = Bundle().apply {
+                putInt("character_id", character.id)
+            }
+            val navController = findNavController()
+            navController.navigate(R.id.action_favoriteFragment_to_characterDetailFragment, bundle)
+        }
 
         characterAdapter.onFavoriteClick = {
             characterAdapter.submitList(null)
