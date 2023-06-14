@@ -4,11 +4,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.retrofitapp.domain.model.character.ResultsCharacter
 import com.example.retrofitapp.domain.model.character.Status
 import com.example.retrofitapp.data.repository.RickAndMortyRepository
 import com.example.retrofitapp.domain.model.episode.ResultsEpisode
 import com.example.retrofitapp.data.repository.ApiResult
+import kotlinx.coroutines.launch
 
 class CharacterDetailViewModel(id: Int) : ViewModel() {
 
@@ -33,8 +35,8 @@ class CharacterDetailViewModel(id: Int) : ViewModel() {
     }
 
     private fun getCharacterInfo(id: Int) {
-        rickAndMortyRepository.getCharacterInfo(id) { result ->
-            when (result) {
+        viewModelScope.launch {
+            when (val result = rickAndMortyRepository.getCharacterInfo(id)) {
                 is ApiResult.Success -> {
                     _characterInfoLiveData.value = result.value
                     getMultipleEpisodes(result.value.episode)
@@ -57,8 +59,9 @@ class CharacterDetailViewModel(id: Int) : ViewModel() {
         if (urls.isNotEmpty() && urls.size > 1) {
             val lastElements = urls.map { it.substring(it.lastIndexOf("/") + 1) }
             val ids = lastElements.joinToString(separator = ",")
-            rickAndMortyRepository.getMultipleEpisodes(ids) { result ->
-                when (result) {
+
+            viewModelScope.launch {
+                when (val result = rickAndMortyRepository.getMultipleEpisodes(ids)) {
                     is ApiResult.Success -> {
                         _episodes.value = result
                     }
@@ -76,8 +79,9 @@ class CharacterDetailViewModel(id: Int) : ViewModel() {
             }
         } else if (urls.size == 1) {
             val id = urls[0].substring(urls[0].lastIndexOf("/") + 1).toInt()
-            rickAndMortyRepository.getEpisodeInfo(id) { result ->
-                when (result) {
+
+            viewModelScope.launch {
+                when (val result = rickAndMortyRepository.getEpisodeInfo(id)) {
                     is ApiResult.Success -> {
                         _episodes.value = ApiResult.Success(listOf(result.value))
                     }

@@ -4,11 +4,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.retrofitapp.data.remote.CharactersDao
 import com.example.retrofitapp.domain.model.character.FilterCharacters
 import com.example.retrofitapp.domain.model.character.ResultsCharacter
 import com.example.retrofitapp.data.repository.ApiResult
 import com.example.retrofitapp.data.repository.RickAndMortyRepository
+import kotlinx.coroutines.launch
 
 class CharacterViewModel : ViewModel() {
 
@@ -41,33 +43,33 @@ class CharacterViewModel : ViewModel() {
     }
 
       private fun getAllCharacters() {
-         isFilterApplied = false
-        rickAndMortyRepository.getAllCharacters(currentPage) { result ->
-            when (result) {
-                is ApiResult.Success -> {
-                    if (currentPage == 1) {
-                        listOfItem.clear()
-                    }
-                    listOfItem.addAll(result.value.results)
-                    _characterMutableLiveData.value = listOfItem
-                    currentPage++
-                }
-                is ApiResult.Error -> {
-                    val errorMessage = result.message
-                    val throwable = result.throwable
-                    Log.e(
-                        "CharacterViewModel",
-                        "Error getting all characters: $errorMessage",
-                        throwable
-                    )
-                }
-            }
-        }
-    }
+          isFilterApplied = false
+          viewModelScope.launch {
+              when (val result = rickAndMortyRepository.getAllCharacters(currentPage)) {
+                  is ApiResult.Success -> {
+                      if (currentPage == 1) {
+                          listOfItem.clear()
+                      }
+                      listOfItem.addAll(result.value.results)
+                      _characterMutableLiveData.value = listOfItem
+                      currentPage++
+                  }
+                  is ApiResult.Error -> {
+                      val errorMessage = result.message
+                      val throwable = result.throwable
+                      Log.e(
+                          "CharacterViewModel",
+                          "Error getting all characters: $errorMessage",
+                          throwable
+                      )
+                  }
+              }
+          }
+      }
 
     private fun getFilteredCharacters(name: String, status: String, gender: String, species: String) {
-        rickAndMortyRepository.getFilteredCharacters(name, status, gender, species, currentPage) { result ->
-            when (result) {
+        viewModelScope.launch {
+        when (val result = rickAndMortyRepository.getFilteredCharacters(name, status, gender, species, currentPage)) {
                 is ApiResult.Success -> {
                     if (currentPage == 1) {
                         listOfItem.clear()

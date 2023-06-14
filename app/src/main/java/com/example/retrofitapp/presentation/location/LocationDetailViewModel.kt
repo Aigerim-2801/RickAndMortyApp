@@ -4,10 +4,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.retrofitapp.domain.model.character.ResultsCharacter
 import com.example.retrofitapp.domain.model.location.ResultsLocation
 import com.example.retrofitapp.data.repository.ApiResult
 import com.example.retrofitapp.data.repository.RickAndMortyRepository
+import kotlinx.coroutines.launch
 
 class LocationDetailViewModel(id: Int) : ViewModel() {
 
@@ -24,8 +26,8 @@ class LocationDetailViewModel(id: Int) : ViewModel() {
     }
 
     private fun getLocationInfo(id: Int){
-        rickAndMortyRepository.getLocationInfo(id){ result ->
-            when (result) {
+        viewModelScope.launch{
+            when (val result = rickAndMortyRepository.getLocationInfo(id)) {
                 is ApiResult.Success -> {
                     _locations.value = result.value
                     getMultipleCharacters(result.value.residents)
@@ -47,8 +49,9 @@ class LocationDetailViewModel(id: Int) : ViewModel() {
         if (urls.isNotEmpty()) {
             val lastElements = urls.map { it.substring(it.lastIndexOf("/") + 1) }
             val ids = lastElements.joinToString(separator = ",")
-            rickAndMortyRepository.getMultipleCharacters(ids) { result ->
-                when (result) {
+
+            viewModelScope.launch{
+                when (val result = rickAndMortyRepository.getMultipleCharacters(ids)) {
                     is ApiResult.Success -> {
                         _characterMutableLiveData.value = result.value
                     }

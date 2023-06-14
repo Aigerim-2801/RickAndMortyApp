@@ -4,9 +4,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.retrofitapp.domain.model.episode.ResultsEpisode
 import com.example.retrofitapp.data.repository.ApiResult
 import com.example.retrofitapp.data.repository.RickAndMortyRepository
+import kotlinx.coroutines.launch
 
 class EpisodeViewModel : ViewModel() {
 
@@ -22,8 +24,8 @@ class EpisodeViewModel : ViewModel() {
     }
 
     fun getAllEpisodes() {
-        rickAndMortyRepository.getAllEpisodes(currentPage) { result ->
-            when (result) {
+        viewModelScope.launch {
+            when (val result = rickAndMortyRepository.getAllEpisodes(currentPage)) {
                 is ApiResult.Success -> {
                     listOfItem = listOfItem.toMutableList()
                     listOfItem.addAll(result.value.results)
