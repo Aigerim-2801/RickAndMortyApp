@@ -32,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#F2F2F7"
+                    android:background="?attr/backgroundColor"
                     android:paddingBottom="15dp"
                     app:popupTheme="@style/Theme.RetrofitApp.PopupOverlay">
 
@@ -72,7 +72,6 @@
                         tools:text="Status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#6E798C"
                         android:layout_gravity="center_horizontal"
                         android:textSize="12sp" />
 
@@ -80,7 +79,6 @@
                         android:id="@+id/name_character"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#081F32"
                         android:textSize="26sp"
                         android:layout_gravity="center_horizontal"
                         tools:text="Name"/>
@@ -89,7 +87,6 @@
                         android:id="@+id/species_character"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#8E8E93"
                         android:textSize="13sp"
                         android:textAllCaps="true"
                         android:layout_gravity="center_horizontal"

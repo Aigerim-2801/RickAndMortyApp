@@ -13,7 +13,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/name"
-            android:textColor="#081F32"
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
             app:errorEnabled="true">
@@ -24,7 +23,8 @@
                 android:imeOptions="actionDone"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:background="@color/white" />
+                app:boxBackgroundColor="@android:color/transparent"
+                android:background="@android:color/transparent" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -32,7 +32,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/species"
-            android:textColor="#081F32"
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
             app:errorEnabled="true">
@@ -42,7 +41,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:background="@color/white" />
+                app:boxBackgroundColor="@android:color/transparent"
+                android:background="@android:color/transparent" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -50,7 +50,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/status"
-            android:textColor="#8E8E93"
             android:textSize="14sp"
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"/>
@@ -66,7 +65,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/gender"
-            android:textColor="#8E8E93"
             android:textSize="14sp"
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"/>
