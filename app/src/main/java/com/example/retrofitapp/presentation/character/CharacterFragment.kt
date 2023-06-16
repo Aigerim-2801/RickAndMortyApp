@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
@@ -18,6 +19,7 @@ import com.example.retrofitapp.data.remote.CharactersDao
 import com.example.retrofitapp.data.utils.CharactersDatabase
 import com.example.retrofitapp.domain.model.character.FilterCharacters
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 
 
 class CharacterFragment : Fragment() {
@@ -42,11 +44,7 @@ class CharacterFragment : Fragment() {
         val layoutManager = GridLayoutManager(requireContext(), 2)
         binding.characterRv.layoutManager = layoutManager
         binding.characterRv.adapter = characterAdapter
-
-        viewModel.characterMutableLiveData.observe(viewLifecycleOwner) {
-            characterAdapter.submitList(it)
-        }
-
+        
         binding.characterRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -100,6 +98,15 @@ class CharacterFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        lifecycleScope.launch {
+            viewModel.charactersStateFlow.collect{
+                characterAdapter.submitList(it)
+            }
+        }
     }
 
     override fun onDestroyView() {

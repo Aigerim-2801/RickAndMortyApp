@@ -1,13 +1,13 @@
 package com.example.retrofitapp.presentation.episode
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.retrofitapp.domain.model.episode.ResultsEpisode
 import com.example.retrofitapp.data.repository.ApiResult
 import com.example.retrofitapp.data.repository.RickAndMortyRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class EpisodeViewModel : ViewModel() {
@@ -15,9 +15,8 @@ class EpisodeViewModel : ViewModel() {
     private var currentPage = 1
     private val rickAndMortyRepository = RickAndMortyRepository
 
-    private val _episodesMutableLiveData = MutableLiveData<List<ResultsEpisode>>()
-    val episodesMutableLiveData: LiveData<List<ResultsEpisode>> = _episodesMutableLiveData
-    private var listOfItem = mutableListOf<ResultsEpisode>()
+    private val _episodesMutableStateFlow = MutableStateFlow<List<ResultsEpisode>>(emptyList())
+    val episodesStateFlow: StateFlow<List<ResultsEpisode>> = _episodesMutableStateFlow
 
     init {
         getAllEpisodes()
@@ -27,9 +26,9 @@ class EpisodeViewModel : ViewModel() {
         viewModelScope.launch {
             when (val result = rickAndMortyRepository.getAllEpisodes(currentPage)) {
                 is ApiResult.Success -> {
-                    listOfItem = listOfItem.toMutableList()
-                    listOfItem.addAll(result.value.results)
-                    _episodesMutableLiveData.value = listOfItem
+                    val updatedList = _episodesMutableStateFlow.value.toMutableList()
+                    updatedList.addAll(result.value.results)
+                    _episodesMutableStateFlow.value = updatedList
                     currentPage++
                 }
                 is ApiResult.Error -> {

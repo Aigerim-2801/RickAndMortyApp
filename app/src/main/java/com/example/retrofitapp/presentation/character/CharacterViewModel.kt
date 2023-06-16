@@ -1,8 +1,6 @@
 package com.example.retrofitapp.presentation.character
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.retrofitapp.data.remote.CharactersDao
@@ -10,6 +8,8 @@ import com.example.retrofitapp.domain.model.character.FilterCharacters
 import com.example.retrofitapp.domain.model.character.ResultsCharacter
 import com.example.retrofitapp.data.repository.ApiResult
 import com.example.retrofitapp.data.repository.RickAndMortyRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class CharacterViewModel : ViewModel() {
@@ -21,9 +21,9 @@ class CharacterViewModel : ViewModel() {
 
     var filterCharacters = FilterCharacters()
 
-    private val _characterMutableLiveData = MutableLiveData<List<ResultsCharacter>>()
-    val characterMutableLiveData: LiveData<List<ResultsCharacter>> = _characterMutableLiveData
-    private var listOfItem = mutableListOf<ResultsCharacter>()
+    private val _charactersMutableStateFlow = MutableStateFlow<List<ResultsCharacter>>(emptyList())
+    val charactersStateFlow: StateFlow<List<ResultsCharacter>> = _charactersMutableStateFlow
+    private val updatedList = _charactersMutableStateFlow.value.toMutableList()
 
     init {
         getAllCharacters()
@@ -48,10 +48,10 @@ class CharacterViewModel : ViewModel() {
               when (val result = rickAndMortyRepository.getAllCharacters(currentPage)) {
                   is ApiResult.Success -> {
                       if (currentPage == 1) {
-                          listOfItem.clear()
+                          updatedList.clear()
                       }
-                      listOfItem.addAll(result.value.results)
-                      _characterMutableLiveData.value = listOfItem
+                      updatedList.addAll(result.value.results)
+                      _charactersMutableStateFlow.value = updatedList
                       currentPage++
                   }
                   is ApiResult.Error -> {
@@ -72,10 +72,10 @@ class CharacterViewModel : ViewModel() {
         when (val result = rickAndMortyRepository.getFilteredCharacters(name, status, gender, species, currentPage)) {
                 is ApiResult.Success -> {
                     if (currentPage == 1) {
-                        listOfItem.clear()
+                        updatedList.clear()
                     }
-                    listOfItem.addAll(result.value.results)
-                    _characterMutableLiveData.value = listOfItem
+                    updatedList.addAll(result.value.results)
+                    _charactersMutableStateFlow.value = updatedList
                     currentPage++
                 }
                 is ApiResult.Error -> {
@@ -93,17 +93,15 @@ class CharacterViewModel : ViewModel() {
 
 
     fun deleteCharacter(character: ResultsCharacter): Int {
-        val position = listOfItem.indexOf(character)
-        listOfItem = listOfItem.toMutableList()
-        listOfItem.remove(character)
-        _characterMutableLiveData.value = listOfItem
+        val position = updatedList.indexOf(character)
+        updatedList.remove(character)
+        _charactersMutableStateFlow.value = updatedList
         return position
     }
 
     fun undo(position: Int, character: ResultsCharacter) {
-        listOfItem = listOfItem.toMutableList()
-        listOfItem.add(position, character)
-        _characterMutableLiveData.value = listOfItem
+        updatedList.add(position, character)
+        _charactersMutableStateFlow.value = updatedList
     }
 
     fun setFilter(filter: FilterCharacters): FilterCharacters {
@@ -127,8 +125,9 @@ class CharacterViewModel : ViewModel() {
 
 
     fun updateFavoriteCharacters(dao: CharactersDao) {
-        listOfItem.addAll(dao.getAll())
-        _characterMutableLiveData.value = listOfItem
+        updatedList.clear()
+        updatedList.addAll(dao.getAll())
+        _charactersMutableStateFlow.value = updatedList
     }
 
     fun checkFlag(isFavorite: Boolean, dao: CharactersDao, character: ResultsCharacter){

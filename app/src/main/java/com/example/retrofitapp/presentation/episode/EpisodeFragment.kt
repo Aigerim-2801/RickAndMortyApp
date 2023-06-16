@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.EpisodeFragmentBinding
 import com.example.retrofitapp.adapters.EpisodeAdapter
-
+import kotlinx.coroutines.launch
 
 class EpisodeFragment : Fragment(){
 
@@ -37,10 +38,6 @@ class EpisodeFragment : Fragment(){
         val layoutManager = LinearLayoutManager(requireContext())
         binding.episodesRv.layoutManager = layoutManager
         binding.episodesRv.adapter = episodeAdapter
-
-        viewModel.episodesMutableLiveData.observe(viewLifecycleOwner) { episodes ->
-            episodeAdapter.submitList(episodes)
-        }
 
         binding.episodesRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -80,6 +77,15 @@ class EpisodeFragment : Fragment(){
         binding.episodesRv.addItemDecoration(dividerItemDecoration)
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        lifecycleScope.launch {
+            viewModel.episodesStateFlow.collect{
+                episodeAdapter.submitList(it)
+            }
+        }
     }
 
     override fun onDestroyView() {

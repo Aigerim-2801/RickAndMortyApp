@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.room.Room
@@ -15,6 +16,7 @@ import com.example.retrofitapp.data.remote.CharactersDao
 import com.example.retrofitapp.data.utils.CharactersDatabase
 import com.example.retrofitapp.databinding.FavoriteFragmentBinding
 import com.example.retrofitapp.presentation.character.CharacterViewModel
+import kotlinx.coroutines.launch
 
 
 class FavoriteFragment : Fragment() {
@@ -56,16 +58,21 @@ class FavoriteFragment : Fragment() {
             viewModel.checkFlag(it.isFavorite, charactersDao, it)
         }
 
-        viewModel.characterMutableLiveData.observe(viewLifecycleOwner) {
-            characterAdapter.submitList(it)
-        }
-
         return binding.root
     }
 
     private fun update(){
         characterAdapter.submitList(null)
         viewModel.updateFavoriteCharacters(charactersDao)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        lifecycleScope.launch {
+            viewModel.charactersStateFlow.collect{
+                characterAdapter.submitList(it)
+            }
+        }
     }
 
     override fun onDestroyView() {

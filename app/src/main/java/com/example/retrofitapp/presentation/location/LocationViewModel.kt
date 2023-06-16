@@ -1,13 +1,13 @@
 package com.example.retrofitapp.presentation.location
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.retrofitapp.domain.model.location.ResultsLocation
 import com.example.retrofitapp.data.repository.ApiResult
 import com.example.retrofitapp.data.repository.RickAndMortyRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 
@@ -16,9 +16,8 @@ class LocationViewModel : ViewModel() {
     private var currentPage = 1
     private val rickAndMortyRepository = RickAndMortyRepository
 
-    private val _locationsMutableLiveData = MutableLiveData<List<ResultsLocation>>()
-    val locationsMutableLiveData: LiveData<List<ResultsLocation>> = _locationsMutableLiveData
-    private var listOfItem = mutableListOf<ResultsLocation>()
+    private val _locationsMutableStateFlow = MutableStateFlow<List<ResultsLocation>>(emptyList())
+    val locationsStateFlow: StateFlow<List<ResultsLocation>> = _locationsMutableStateFlow
 
     init {
         getAllLocations()
@@ -28,9 +27,9 @@ class LocationViewModel : ViewModel() {
         viewModelScope.launch{
             when (val result = rickAndMortyRepository.getAllLocations(currentPage)) {
                 is ApiResult.Success -> {
-                    listOfItem = listOfItem.toMutableList()
-                    listOfItem.addAll(result.value.results)
-                    _locationsMutableLiveData.value = listOfItem
+                    val updatedList = _locationsMutableStateFlow.value.toMutableList()
+                    updatedList.addAll(result.value.results)
+                    _locationsMutableStateFlow.value = updatedList
                     currentPage++
                 }
                 is ApiResult.Error -> {
