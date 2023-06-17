@@ -15,6 +15,13 @@
         android:theme="@style/Theme.RetrofitApp"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.SettingsActivity"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".presentation.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.RetrofitApp">
@@ -25,4 +32,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

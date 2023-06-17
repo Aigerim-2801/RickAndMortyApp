@@ -1,5 +1,6 @@
 package com.example.retrofitapp.presentation.character
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import com.example.retrofitapp.adapters.CharacterAdapter
 import com.example.retrofitapp.data.remote.CharactersDao
 import com.example.retrofitapp.data.utils.CharactersDatabase
 import com.example.retrofitapp.domain.model.character.FilterCharacters
+import com.example.retrofitapp.presentation.SettingsActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
@@ -95,6 +97,11 @@ class CharacterFragment : Fragment() {
             val filterBottomSheetFragment = FilterBottomSheetFragment()
             filterBottomSheetFragment.arguments = bundle
             filterBottomSheetFragment.show(parentFragmentManager, "FilterBottomSheetDialog")
+        }
+
+        binding.openSettingsBtn.setOnClickListener {
+            val intent = Intent(activity, SettingsActivity::class.java)
+            startActivity(intent)
         }
 
         return binding.root
