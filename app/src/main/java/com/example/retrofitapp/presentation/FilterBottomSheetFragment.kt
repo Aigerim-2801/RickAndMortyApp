@@ -7,9 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.FilterBottomSheetBinding
-import com.example.retrofitapp.presentation.character.CharacterFragment
 import com.example.retrofitapp.domain.model.character.FilterCharacters
 import com.example.retrofitapp.domain.model.character.Gender
 import com.example.retrofitapp.domain.model.character.Status
@@ -36,7 +37,7 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        filterCharacters = arguments?.getSerializableCompat("FilterCharacters", FilterCharacters::class.java)!!
+        filterCharacters = arguments?.getSerializableCompat(FILTER_KEY, FilterCharacters::class.java)!!
 
         for (valueStatus in Status.values()) {
             val radioButton = RadioButton(context)
@@ -78,7 +79,7 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment() {
             if (selectedStatus == null || selectedGender == null) {
                 Toast.makeText(context, getString(R.string.comment_filter), Toast.LENGTH_SHORT).show()
             } else {
-                (activity?.supportFragmentManager?.fragments?.firstOrNull { it is CharacterFragment } as? CharacterFragment)?.setFilter(filterCharacters)
+                setFragmentResult(REQUEST_KEY, bundleOf("key" to filterCharacters))
                 dismiss()
             }
         }
@@ -92,7 +93,7 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment() {
             filterCharacters.status = null
             filterCharacters.gender = null
 
-            (activity?.supportFragmentManager?.fragments?.firstOrNull { it is CharacterFragment } as? CharacterFragment)?.cancelFilter()
+            setFragmentResult(REQUEST_KEY, bundleOf(PAIRS_KEY to null))
             dismiss()
         }
     }
@@ -100,5 +101,11 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment() {
     private fun <T : Serializable?> Bundle.getSerializableCompat(key: String, clazz: Class<T>): T {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) getSerializable(key, clazz)!!
         else (getSerializable(key) as T)
+    }
+
+    companion object{
+        const val FILTER_KEY = "FilterCharacters"
+        const val REQUEST_KEY = "SetCancelFilter"
+        const val PAIRS_KEY = "key"
     }
 }
