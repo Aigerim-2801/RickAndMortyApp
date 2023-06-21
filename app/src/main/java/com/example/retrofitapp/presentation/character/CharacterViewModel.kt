@@ -74,8 +74,11 @@ class CharacterViewModel : ViewModel() {
                     if (currentPage == 1) {
                         updatedList.clear()
                     }
-                    updatedList.addAll(result.value.results)
-                    _charactersMutableStateFlow.value = updatedList
+                    val tempList = updatedList.toMutableList().apply {
+                        addAll(result.value.results)
+                    }
+                    _charactersMutableStateFlow.value = tempList
+
                     currentPage++
                 }
                 is ApiResult.Error -> {
@@ -89,19 +92,6 @@ class CharacterViewModel : ViewModel() {
                 }
             }
         }
-    }
-
-
-    fun deleteCharacter(character: ResultsCharacter): Int {
-        val position = updatedList.indexOf(character)
-        updatedList.remove(character)
-        _charactersMutableStateFlow.value = updatedList
-        return position
-    }
-
-    fun undo(position: Int, character: ResultsCharacter) {
-        updatedList.add(position, character)
-        _charactersMutableStateFlow.value = updatedList
     }
 
     fun setFilter(filter: FilterCharacters): FilterCharacters {

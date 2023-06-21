@@ -38,14 +38,14 @@ class CharacterDetailViewModel(id: Int) : ViewModel() {
         viewModelScope.launch {
             when (val result = rickAndMortyRepository.getCharacterInfo(id)) {
                 is ApiResult.Success -> {
-                    _characterInfoLiveData.value = result.value
+                    this@CharacterDetailViewModel._characterInfoLiveData.value = result.value
                     getMultipleEpisodes(result.value.episode)
                 }
                 is ApiResult.Error -> {
                     val errorMessage = result.message
                     val throwable = result.throwable
                     Log.e(
-                        "CharacterDetailViewModel",
+                        "CharacterDetailVM",
                         "Error getting character info: $errorMessage",
                         throwable
                     )
@@ -69,7 +69,7 @@ class CharacterDetailViewModel(id: Int) : ViewModel() {
                         val errorMessage = result.message
                         val throwable = result.throwable
                         Log.e(
-                            "CharacterDetailViewModel",
+                            "CharacterDetailVM",
                             "Error getting episodes of character info: $errorMessage",
                             throwable
                         )
