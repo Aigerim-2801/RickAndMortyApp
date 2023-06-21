@@ -15,10 +15,10 @@ class LocationDetailViewModel(id: Int) : ViewModel() {
 
     private val rickAndMortyRepository = RickAndMortyRepository
 
-    private val _characterMutableLiveData = MutableLiveData<List<ResultsCharacter>>()
+    private val _characterMutableLiveData: MutableLiveData<List<ResultsCharacter>> = MutableLiveData()
     val characterMutableLiveData: LiveData<List<ResultsCharacter>> = _characterMutableLiveData
 
-    private val _locations = MutableLiveData<ResultsLocation>()
+    private val _locations: MutableLiveData<ResultsLocation> = MutableLiveData()
     val locations: LiveData<ResultsLocation> = _locations
 
     init {
@@ -29,7 +29,7 @@ class LocationDetailViewModel(id: Int) : ViewModel() {
         viewModelScope.launch{
             when (val result = rickAndMortyRepository.getLocationInfo(id)) {
                 is ApiResult.Success -> {
-                    _locations.value = result.value
+                    this@LocationDetailViewModel._locations.value = result.value
                     getMultipleCharacters(result.value.residents)
                 }
                 is ApiResult.Error -> {
@@ -53,7 +53,7 @@ class LocationDetailViewModel(id: Int) : ViewModel() {
             viewModelScope.launch{
                 when (val result = rickAndMortyRepository.getMultipleCharacters(ids)) {
                     is ApiResult.Success -> {
-                        _characterMutableLiveData.value = result.value
+                        this@LocationDetailViewModel._characterMutableLiveData.value = result.value
                     }
                     is ApiResult.Error -> {
                         val errorMessage = result.message

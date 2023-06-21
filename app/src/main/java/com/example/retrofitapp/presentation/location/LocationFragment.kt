@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.LocationFragmentBinding
 import com.example.retrofitapp.adapters.LocationAdapter
+import com.example.retrofitapp.data.utils.Const
 import kotlinx.coroutines.launch
 
 
@@ -63,7 +65,13 @@ class LocationFragment : Fragment(R.layout.location_item) {
         })
 
 
-        locationAdapter.onLocationClick = {  navigateToDetail(it.id) }
+        locationAdapter.onLocationClick = { location->
+            val bundle = Bundle().apply {
+                putInt(Const.LOCATION_ID, location.id)
+            }
+            val navController = findNavController()
+            navController.navigate(R.id.action_locationFragment_to_locationDetailFragment, bundle)
+        }
 
         return binding.root
     }
@@ -80,13 +88,5 @@ class LocationFragment : Fragment(R.layout.location_item) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun navigateToDetail(id: Int){
-        val fragment = LocationDetailFragment.startLocationFragment(id)
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.recycler_view_container, fragment)
-            .addToBackStack(null)
-            .commit()
     }
 }
