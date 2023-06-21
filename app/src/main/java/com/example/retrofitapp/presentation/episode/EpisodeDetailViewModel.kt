@@ -29,7 +29,7 @@ class EpisodeDetailViewModel(id: Int) : ViewModel() {
         viewModelScope.launch {
             when (val result = rickAndMortyRepository.getEpisodeInfo(id)) {
                 is ApiResult.Success -> {
-                    _episodes.value = result.value
+                    this@EpisodeDetailViewModel._episodes.value = result.value
                     getMultipleCharacters(result.value.characters)
                 }
                 is ApiResult.Error -> {
@@ -53,7 +53,7 @@ class EpisodeDetailViewModel(id: Int) : ViewModel() {
             viewModelScope.launch {
                 when (val result = rickAndMortyRepository.getMultipleCharacters(ids)) {
                     is ApiResult.Success -> {
-                        _characterMutableLiveData.value = result.value
+                        this@EpisodeDetailViewModel._characterMutableLiveData.value = result.value
                     }
                     is ApiResult.Error -> {
                         val errorMessage = result.message

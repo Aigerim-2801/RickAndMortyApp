@@ -6,11 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.EpisodeDetailBinding
 import com.example.retrofitapp.adapters.CharacterAdapter
-import com.example.retrofitapp.presentation.character.CharacterDetailFragment
+import com.example.retrofitapp.data.utils.Const
 import com.example.retrofitapp.presentation.character.ViewModelFactory
 
 class EpisodeDetailFragment : Fragment() {
@@ -33,9 +34,9 @@ class EpisodeDetailFragment : Fragment() {
         binding.episodeCharacterRv.layoutManager = layoutManager
         binding.episodeCharacterRv.adapter = characterAdapter
 
-        val episodeId = arguments?.getInt(EPISODE_ID, -1) ?: -1
+        val episodeId = arguments?.getInt(Const.EPISODE_ID, -1) ?: -1
 
-        val viewModelFactory = ViewModelFactory(episodeId)
+        val viewModelFactory = ViewModelFactory(episodeId, requireContext())
         viewModel = ViewModelProvider(this, viewModelFactory)[EpisodeDetailViewModel::class.java]
 
         viewModel.characterMutableLiveData.observe(viewLifecycleOwner) {
@@ -44,17 +45,15 @@ class EpisodeDetailFragment : Fragment() {
 
         observeCharacter()
 
-        characterAdapter.onCharacterClick = { navigateToCharacterDetail(it.id) }
+        characterAdapter.onCharacterClick = { character->
+            val bundle = Bundle().apply {
+                putInt(Const.CHARACTER_ID, character.id)
+            }
+            val navController = findNavController()
+            navController.navigate(R.id.action_episodeDetailFragment_to_characterDetailFragment, bundle)
+        }
 
         return binding.root
-    }
-
-    private fun navigateToCharacterDetail(id: Int) {
-        val fragment = CharacterDetailFragment.startCharacterFragment(id)
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.recycler_view_container, fragment)
-            .addToBackStack(null)
-            .commit()
     }
 
     private fun observeCharacter() {
@@ -62,18 +61,6 @@ class EpisodeDetailFragment : Fragment() {
             binding.nameEpisodeDetail.text = episodes.name
             binding.airDateEpisodeDetail.text = episodes.air_date
             binding.episodeEpisodeDetail.text = episodes.episode
-        }
-    }
-
-    companion object {
-        private const val EPISODE_ID = "episode_id"
-        fun startEpisodeFragment(episodeId: Int): EpisodeDetailFragment {
-            val args = Bundle().apply {
-                putInt(EPISODE_ID, episodeId)
-            }
-            return EpisodeDetailFragment().apply {
-                arguments = args
-            }
         }
     }
 }

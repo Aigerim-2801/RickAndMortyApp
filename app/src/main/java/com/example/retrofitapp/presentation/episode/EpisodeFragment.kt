@@ -8,12 +8,14 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.EpisodeFragmentBinding
 import com.example.retrofitapp.adapters.EpisodeAdapter
+import com.example.retrofitapp.data.utils.Const
 import kotlinx.coroutines.launch
 
 class EpisodeFragment : Fragment(){
@@ -61,7 +63,13 @@ class EpisodeFragment : Fragment(){
             }
         })
 
-        episodeAdapter.onEpisodeClick = { navigateToDetail(it.id) }
+        episodeAdapter.onEpisodeClick = { episode->
+            val bundle = Bundle().apply {
+                putInt(Const.EPISODE_ID, episode.id)
+            }
+            val navController = findNavController()
+            navController.navigate(R.id.action_episodeFragment_to_episodeDetailFragment, bundle)
+        }
 
         val dividerItemDecoration = DividerItemDecoration(
             binding.episodesRv.context,
@@ -91,13 +99,5 @@ class EpisodeFragment : Fragment(){
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun navigateToDetail(id: Int) {
-        val fragment = EpisodeDetailFragment.startEpisodeFragment(id)
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.recycler_view_container, fragment)
-            .addToBackStack(null)
-            .commit()
     }
 }
