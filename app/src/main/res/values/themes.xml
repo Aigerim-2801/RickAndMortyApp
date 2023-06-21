@@ -18,6 +18,7 @@
         <item name="backgroundColor">@color/backgroundColorLight</item>
 
     </style>
+
     <style name="Theme.RetrofitApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.RetrofitApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
