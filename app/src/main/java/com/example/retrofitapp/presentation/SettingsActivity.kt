@@ -18,7 +18,7 @@ class SettingsActivity : AppCompatActivity() {
 
         sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
 
-        binding.themeSwitch.isChecked = sharedPreferences.getBoolean("theme_preference", false)
+        binding.themeSwitch.isChecked = sharedPreferences.getBoolean(THEME_PREFERENCE_KEY, false)
 
         binding.themeSwitch.setOnCheckedChangeListener { _, isChecked ->
             saveThemePreference(isChecked)
@@ -28,7 +28,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun saveThemePreference(isDarkMode: Boolean) {
         val editor = sharedPreferences.edit()
-        editor.putBoolean("theme_preference", isDarkMode)
+        editor.putBoolean(THEME_PREFERENCE_KEY, isDarkMode)
         editor.apply()
     }
 
@@ -38,5 +38,9 @@ class SettingsActivity : AppCompatActivity() {
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
+    }
+
+    companion object{
+        private const val THEME_PREFERENCE_KEY = "theme_preference"
     }
 }

@@ -18,8 +18,6 @@ class CharacterAdapter : ListAdapter<ResultsCharacter, CharacterAdapter.Characte
 ) {
     var onCharacterClick: ((ResultsCharacter) -> Unit)? = null
 
-    var onCharacterDeleteClick: ((ResultsCharacter) -> Unit)? = null
-
     var onFavoriteClick: ((ResultsCharacter) -> Unit)? = null
 
     class CharacterViewHolder(val binding: CharacterItemBinding) :
@@ -48,10 +46,6 @@ class CharacterAdapter : ListAdapter<ResultsCharacter, CharacterAdapter.Characte
                 else -> {
                     statusImg.setImageResource(R.drawable.status_unknown)
                 }
-            }
-
-            deleteBtn.setOnClickListener {
-                onCharacterDeleteClick?.invoke(character)
             }
 
             if (character.isFavorite) {

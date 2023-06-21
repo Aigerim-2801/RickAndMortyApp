@@ -8,7 +8,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.MainActivityBinding
-import com.example.retrofitapp.presentation.character.CharacterFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,13 +30,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomNavigationView.setupWithNavController(navController)
 
-        if (savedInstanceState == null) {
-            val fragment = CharacterFragment()
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.recycler_view_container, fragment)
-                .commit()
-            binding.bottomNavigationView.menu.findItem(R.id.characterFragment).isChecked = true
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

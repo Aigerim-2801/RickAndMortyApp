@@ -20,6 +20,7 @@ app:startDestination="@id/characterFragment">
         <action
             android:id="@+id/action_favoriteFragment_to_characterDetailFragment"
             app:destination="@id/characterDetailFragment" />
+
     </fragment>
 
 
