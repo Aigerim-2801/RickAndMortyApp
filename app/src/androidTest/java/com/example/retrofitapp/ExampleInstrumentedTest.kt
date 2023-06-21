@@ -32,7 +32,7 @@ class ExampleInstrumentedTest {
 
     @Test
     fun testSettingsButtonClick() {
-        val scenario = launchFragmentInContainer<CharacterFragment>()
+        val scenario = launchFragmentInContainer<CharacterFragment>(themeResId = R.style.Theme_RetrofitApp)
         onView(withId(R.id.open_settings_btn)).perform(click())
 
         scenario.onFragment { fragment ->
@@ -42,7 +42,7 @@ class ExampleInstrumentedTest {
 
     @Test
     fun testFilterButtonClick() {
-        val scenario = launchFragmentInContainer<CharacterFragment>()
+        val scenario = launchFragmentInContainer<CharacterFragment>(themeResId = R.style.Theme_RetrofitApp)
         onView(withId(R.id.filter_btn)).perform(click())
 
         scenario.onFragment { fragment ->
