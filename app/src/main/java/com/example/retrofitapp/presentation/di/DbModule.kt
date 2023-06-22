@@ -1,11 +1,9 @@
-package com.example.retrofitapp.data.module
+package com.example.retrofitapp.presentation.di
 
 import android.content.Context
 import androidx.room.Room
 import com.example.retrofitapp.data.remote.CharactersDao
-import com.example.retrofitapp.data.remote.RickAndMortyApi
 import com.example.retrofitapp.data.repository.DatabaseRepository
-import com.example.retrofitapp.data.repository.RickAndMortyRepository
 import com.example.retrofitapp.data.utils.CharactersDatabase
 import dagger.Module
 import dagger.Provides
@@ -18,12 +16,13 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DbModule {
 
+    private const val dbName = "CharactersFavoriteDatabase"
+
     @Provides
     @Singleton
     fun provide(@ApplicationContext context: Context) = Room.databaseBuilder(
-        context, CharactersDatabase::class.java, "CharactersFavoriteDatabase")
+        context, CharactersDatabase::class.java, dbName)
         .allowMainThreadQueries()
-        .fallbackToDestructiveMigration()
         .build()
 
     @Provides

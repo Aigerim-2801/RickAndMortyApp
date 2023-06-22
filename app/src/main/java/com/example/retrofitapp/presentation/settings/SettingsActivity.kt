@@ -1,13 +1,9 @@
 package com.example.retrofitapp.presentation.settings
 
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.fragment.app.viewModels
 import com.example.retrofitapp.databinding.ActivitySettingsBinding
-import com.example.retrofitapp.presentation.location.LocationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

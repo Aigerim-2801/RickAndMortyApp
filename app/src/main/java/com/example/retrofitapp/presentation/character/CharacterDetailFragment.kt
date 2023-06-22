@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,10 +27,16 @@ class CharacterDetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val episodeAdapter = EpisodeAdapter()
-    private val viewModel by viewModels<CharacterDetailViewModel>()
 
-//    @Inject
-//    val characterId: Int = arguments?.getInt(Const.CHARACTER_ID, -1) ?: -1
+    @Inject
+    lateinit var assistedFactory: CharacterDetailViewModel.CharacterDetailFactory
+
+    private val viewModel: CharacterDetailViewModel by viewModels {
+        CharacterDetailViewModel.CharacterDetailViewModelFactory(
+            assistedFactory,
+            arguments?.getInt(Const.CHARACTER_ID, -1) ?: -1
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,11 +48,6 @@ class CharacterDetailFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireContext())
         binding.contentCharacter.episodesRV.layoutManager = layoutManager
         binding.contentCharacter.episodesRV.adapter = episodeAdapter
-
-//        val characterId = arguments?.getInt(Const.CHARACTER_ID, -1) ?: -1
-
-//        val viewModelFactory = ViewModelFactory(characterId, requireContext())
-//        viewModel = ViewModelProvider(this, viewModelFactory)[CharacterDetailViewModel::class.java]
 
         viewModel.episodes.observe(viewLifecycleOwner) { result ->
             when (result) {

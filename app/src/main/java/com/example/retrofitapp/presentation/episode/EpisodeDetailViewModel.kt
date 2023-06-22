@@ -1,20 +1,17 @@
 package com.example.retrofitapp.presentation.episode
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.retrofitapp.domain.model.character.ResultsCharacter
 import com.example.retrofitapp.domain.model.episode.ResultsEpisode
 import com.example.retrofitapp.data.repository.ApiResult
 import com.example.retrofitapp.data.repository.RickAndMortyRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import dagger.assisted.AssistedInject
 
-@HiltViewModel
-class EpisodeDetailViewModel @Inject constructor(id: Int, private val rickAndMortyRepository: RickAndMortyRepository) : ViewModel() {
+class EpisodeDetailViewModel @AssistedInject constructor(@Assisted private val id: Int, private val rickAndMortyRepository: RickAndMortyRepository) : ViewModel() {
 
     private val _characterMutableLiveData = MutableLiveData<List<ResultsCharacter>>()
     val characterMutableLiveData: LiveData<List<ResultsCharacter>> = _characterMutableLiveData
@@ -67,6 +64,21 @@ class EpisodeDetailViewModel @Inject constructor(id: Int, private val rickAndMor
                     }
                 }
             }
+        }
+    }
+
+
+    @AssistedFactory
+    interface EpisodeDetailFactory {
+        fun create(episodeId: Int): EpisodeDetailViewModel
+    }
+
+    class EpisodeDetailViewModelFactory(
+        private val assistedFactory: EpisodeDetailFactory,
+        private val episodeId: Int,
+    ) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return assistedFactory.create(episodeId) as T
         }
     }
 }

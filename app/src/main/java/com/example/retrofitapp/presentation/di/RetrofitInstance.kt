@@ -1,4 +1,4 @@
-package com.example.retrofitapp.data.module
+package com.example.retrofitapp.presentation.di
 
 import android.app.Application
 import android.content.Context
@@ -12,11 +12,19 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object RetrofitInstance {
+
+    private const val BASE_URL = "https://rickandmortyapi.com/api/"
+
+    @Provides
+    @Singleton
+    @Named(value = "baseUrl")
+    fun provideBaseUrl() = BASE_URL
 
     @Provides
     @Singleton
@@ -27,9 +35,9 @@ object RetrofitInstance {
 
     @Provides
     @Singleton
-    fun provideInstance(okHttpClient: OkHttpClient, BASE_URL: String): Retrofit {
+    fun provideInstance(okHttpClient: OkHttpClient, @Named(value = "baseUrl") baseUrl: String): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

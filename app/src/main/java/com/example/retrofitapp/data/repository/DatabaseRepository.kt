@@ -10,7 +10,7 @@ class DatabaseRepository  @Inject constructor(private val charactersDao: Charact
 
     fun insert(characters: ResultsCharacter) = charactersDao.insert(characters)
 
-    fun getAll(): List<ResultsCharacter> = charactersDao.getAll()
+    fun getAll() = charactersDao.getAll()
 
     fun delete(characters: ResultsCharacter) = charactersDao.delete(characters)
 }

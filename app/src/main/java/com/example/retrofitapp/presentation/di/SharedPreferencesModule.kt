@@ -1,4 +1,4 @@
-package com.example.retrofitapp.data.module
+package com.example.retrofitapp.presentation.di
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -16,6 +16,10 @@ class SharedPreferencesModule {
     @Singleton
     @Provides
     fun provideSharedPreference(@ApplicationContext context: Context): SharedPreferences {
-        return context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        return context.getSharedPreferences(prefName, Context.MODE_PRIVATE)
+    }
+
+    companion object {
+        private const val prefName = "SettingsPrefs"
     }
 }

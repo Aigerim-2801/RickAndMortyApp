@@ -12,15 +12,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.CharacterFragmentBinding
 import com.example.retrofitapp.presentation.filter.FilterBottomSheetFragment
 import com.example.retrofitapp.adapters.CharacterAdapter
-import com.example.retrofitapp.data.remote.CharactersDao
-import com.example.retrofitapp.data.utils.CharactersDatabase
 import com.example.retrofitapp.data.utils.Const
 import com.example.retrofitapp.domain.model.character.FilterCharacters
+import com.example.retrofitapp.presentation.favorite.FavoriteViewModel
 import com.example.retrofitapp.presentation.filter.FilterBottomSheetFragment.Companion.FILTER_KEY
 import com.example.retrofitapp.presentation.filter.FilterBottomSheetFragment.Companion.PAIRS_KEY
 import com.example.retrofitapp.presentation.filter.FilterBottomSheetFragment.Companion.REQUEST_KEY
@@ -36,11 +34,11 @@ class CharacterFragment : Fragment() {
     private val characterAdapter = CharacterAdapter()
 
     private val viewModel by viewModels<CharacterViewModel>()
+    private val favViewModel by viewModels<FavoriteViewModel>()
 
     private var loading = false
     private var previousTotalItemCount = 0
     private var visibleThreshold = 80
-    private lateinit var charactersDao: CharactersDao
 
     private var isButtonClickHandled: Boolean = false
 
@@ -81,10 +79,9 @@ class CharacterFragment : Fragment() {
             }
         })
 
-        val db: CharactersDatabase = Room.databaseBuilder(requireContext(), CharactersDatabase::class.java, "CharactersFavoriteDatabase").allowMainThreadQueries().build()
-
-        charactersDao = db.getCharactersDao()
-        characterAdapter.onFavoriteClick = { viewModel.checkFlag(it.isFavorite, charactersDao, it) }
+        characterAdapter.onFavoriteClick = { character->
+            favViewModel.onFavoriteStateChanged(character.isFavorite, character)
+        }
 
         characterAdapter.onCharacterClick = { character->
             val bundle = Bundle().apply {
@@ -120,6 +117,11 @@ class CharacterFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.charactersStateFlow.collect{
                 characterAdapter.submitList(it)
+            }
+        }
+        lifecycleScope.launch {
+            favViewModel.favoriteCharactersStateFlow.collect{
+                viewModel.onFavoriteStateChanged(it)
             }
         }
     }

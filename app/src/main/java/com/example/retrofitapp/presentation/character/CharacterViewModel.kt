@@ -3,7 +3,6 @@ package com.example.retrofitapp.presentation.character
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.retrofitapp.data.remote.CharactersDao
 import com.example.retrofitapp.domain.model.character.FilterCharacters
 import com.example.retrofitapp.domain.model.character.ResultsCharacter
 import com.example.retrofitapp.data.repository.ApiResult
@@ -26,6 +25,8 @@ class CharacterViewModel @Inject constructor(private val rickAndMortyRepository:
     private val _charactersMutableStateFlow = MutableStateFlow<List<ResultsCharacter>>(emptyList())
     val charactersStateFlow: StateFlow<List<ResultsCharacter>> = _charactersMutableStateFlow
     private val updatedList = _charactersMutableStateFlow.value.toMutableList()
+
+    private var favoriteList: List<ResultsCharacter> = listOf()
 
     init {
         getAllCharacters()
@@ -53,7 +54,16 @@ class CharacterViewModel @Inject constructor(private val rickAndMortyRepository:
                           updatedList.clear()
                       }
                       updatedList.addAll(result.value.results)
-                      _charactersMutableStateFlow.value = updatedList
+
+                      val currentList = updatedList.toList()
+                      val resultedList = currentList.map {
+                          favoriteList.firstOrNull { character ->
+                              character.id == it.id
+                          } ?: it
+                      }
+
+                      _charactersMutableStateFlow.value = resultedList
+
                       currentPage++
                   }
                   is ApiResult.Error -> {
@@ -79,7 +89,15 @@ class CharacterViewModel @Inject constructor(private val rickAndMortyRepository:
                     val tempList = updatedList.toMutableList().apply {
                         addAll(result.value.results)
                     }
-                    _charactersMutableStateFlow.value = tempList
+
+                    val currentList = tempList.toList()
+                    val resultedList = currentList.map {
+                        favoriteList.firstOrNull { character ->
+                            character.id == it.id
+                        } ?: it
+                    }
+
+                    _charactersMutableStateFlow.value = resultedList
 
                     currentPage++
                 }
@@ -115,21 +133,16 @@ class CharacterViewModel @Inject constructor(private val rickAndMortyRepository:
         getAllCharacters()
     }
 
-
-    fun updateFavoriteCharacters(dao: CharactersDao) {
-        updatedList.clear()
-        updatedList.addAll(dao.getAll())
-        _charactersMutableStateFlow.value = updatedList
-    }
-
-    fun checkFlag(isFavorite: Boolean, dao: CharactersDao, character: ResultsCharacter){
-        if(!isFavorite){
-            character.isFavorite = true
-            dao.insert(character)
-        }else{
-            character.isFavorite = false
-            dao.delete(character)
+    fun onFavoriteStateChanged(list: List<ResultsCharacter>){
+        viewModelScope.launch {
+            favoriteList = list
+            val currentList = updatedList.toList()
+            val resultedList = currentList.map {
+                list.firstOrNull { character ->
+                    character.id == it.id
+                } ?: it
+            }
+            _charactersMutableStateFlow.value = resultedList
         }
-//        updateFavoriteCharacters(dao)
     }
 }

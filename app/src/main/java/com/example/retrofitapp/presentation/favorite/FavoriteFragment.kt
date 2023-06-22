@@ -34,9 +34,6 @@ class FavoriteFragment : Fragment() {
     ): View {
         _binding = FavoriteFragmentBinding.inflate(inflater, container, false)
 
-//        val viewModelFactory = ViewModelFactory(0, requireContext())
-//        viewModel = ViewModelProvider(this, viewModelFactory)[FavoriteViewModel::class.java]
-
         val layoutManager = GridLayoutManager(requireContext(), 2)
         binding.favoriteRv.layoutManager = layoutManager
         binding.favoriteRv.adapter = characterAdapter

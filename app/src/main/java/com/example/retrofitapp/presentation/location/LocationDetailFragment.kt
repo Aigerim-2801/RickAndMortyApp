@@ -6,15 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.LocationDetailBinding
 import com.example.retrofitapp.adapters.CharacterAdapter
 import com.example.retrofitapp.data.utils.Const
-import com.example.retrofitapp.presentation.episode.EpisodeDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LocationDetailFragment : Fragment() {
@@ -24,7 +23,15 @@ class LocationDetailFragment : Fragment() {
 
     private val characterAdapter = CharacterAdapter()
 
-    private val viewModel by viewModels<LocationDetailViewModel>()
+    @Inject
+    lateinit var assistedFactory: LocationDetailViewModel.LocationDetailFactory
+
+    private val viewModel: LocationDetailViewModel by viewModels {
+        LocationDetailViewModel.LocationDetailViewModelFactory(
+            assistedFactory,
+            arguments?.getInt(Const.LOCATION_ID, -1) ?: -1
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,11 +43,6 @@ class LocationDetailFragment : Fragment() {
         val layoutManager = GridLayoutManager(requireContext(), 2)
         binding.locationCharacterRv.layoutManager = layoutManager
         binding.locationCharacterRv.adapter = characterAdapter
-
-        val locationId = arguments?.getInt(Const.LOCATION_ID, -1) ?: -1
-
-//        val viewModelFactory = ViewModelFactory(locationId, requireContext())
-//        viewModel = ViewModelProvider(this, viewModelFactory)[LocationDetailViewModel::class.java]
 
         viewModel.characterMutableLiveData.observe(viewLifecycleOwner) {
             characterAdapter.submitList(it)
