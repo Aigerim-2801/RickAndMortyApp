@@ -1,32 +1,46 @@
 package com.example.retrofitapp.presentation.character
 
-import android.graphics.Color
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.CharacterFragmentBinding
-import com.example.retrofitapp.presentation.FilterBottomSheetFragment
+import com.example.retrofitapp.presentation.filter.FilterBottomSheetFragment
 import com.example.retrofitapp.adapters.CharacterAdapter
+import com.example.retrofitapp.data.utils.Const
 import com.example.retrofitapp.domain.model.character.FilterCharacters
-import com.google.android.material.snackbar.Snackbar
+import com.example.retrofitapp.presentation.favorite.FavoriteViewModel
+import com.example.retrofitapp.presentation.filter.FilterBottomSheetFragment.Companion.FILTER_KEY
+import com.example.retrofitapp.presentation.filter.FilterBottomSheetFragment.Companion.PAIRS_KEY
+import com.example.retrofitapp.presentation.filter.FilterBottomSheetFragment.Companion.REQUEST_KEY
+import com.example.retrofitapp.presentation.settings.SettingsActivity
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class CharacterFragment : Fragment() {
 
     private var _binding: CharacterFragmentBinding? = null
     private val binding get() = _binding!!
     private val characterAdapter = CharacterAdapter()
-    private val viewModel: CharacterViewModel by viewModels()
+
+    private val viewModel by viewModels<CharacterViewModel>()
+    private val favViewModel by viewModels<FavoriteViewModel>()
 
     private var loading = false
     private var previousTotalItemCount = 0
     private var visibleThreshold = 80
+
+    private var isButtonClickHandled: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,11 +52,7 @@ class CharacterFragment : Fragment() {
         val layoutManager = GridLayoutManager(requireContext(), 2)
         binding.characterRv.layoutManager = layoutManager
         binding.characterRv.adapter = characterAdapter
-
-        viewModel.characterMutableLiveData.observe(viewLifecycleOwner) {
-            characterAdapter.submitList(it)
-        }
-
+        
         binding.characterRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -69,28 +79,64 @@ class CharacterFragment : Fragment() {
             }
         })
 
-        characterAdapter.onCharacterClick = { navigateToDetail(it.id) }
+        characterAdapter.onFavoriteClick = { character->
+            favViewModel.onFavoriteStateChanged(character.isFavorite, character)
+        }
 
-        characterAdapter.onCharacterDeleteClick = { characterItem ->
-            val position = viewModel.deleteCharacter(characterItem)
-            val snackbar = Snackbar.make(requireView(), R.string.deleted, Snackbar.LENGTH_LONG)
-            snackbar.setAction(getString(R.string.undo)) {
-                viewModel.undo(position, characterItem)
+        characterAdapter.onCharacterClick = { character->
+            val bundle = Bundle().apply {
+                putInt(Const.CHARACTER_ID, character.id)
             }
-            snackbarType(snackbar)
+            val navController = findNavController()
+            navController.navigate(R.id.action_characterFragment_to_characterDetailFragment, bundle)
         }
 
         binding.filterBtn.setOnClickListener {
+            isButtonClickHandled = true
+
             val filterCharacters = viewModel.filterCharacters
             val bundle = Bundle()
-            bundle.putSerializable("FilterCharacters", filterCharacters)
+            bundle.putSerializable(FILTER_KEY, filterCharacters)
 
             val filterBottomSheetFragment = FilterBottomSheetFragment()
             filterBottomSheetFragment.arguments = bundle
             filterBottomSheetFragment.show(parentFragmentManager, "FilterBottomSheetDialog")
         }
 
+        binding.openSettingsBtn.setOnClickListener {
+            isButtonClickHandled = true
+            val intent = Intent(activity, SettingsActivity::class.java)
+            startActivity(intent)
+        }
+
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        lifecycleScope.launch {
+            viewModel.charactersStateFlow.collect{
+                characterAdapter.submitList(it)
+            }
+        }
+        lifecycleScope.launch {
+            favViewModel.favoriteCharactersStateFlow.collect{
+                viewModel.onFavoriteStateChanged(it)
+            }
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setFragmentResultListener(REQUEST_KEY) { _, bundle ->
+            val filter = bundle.getSerializable(PAIRS_KEY) as FilterCharacters?
+            if(filter != null) {
+                setFilter(filter)
+            }else{
+                cancelFilter()
+            }
+        }
+
     }
 
     override fun onDestroyView() {
@@ -98,29 +144,17 @@ class CharacterFragment : Fragment() {
         _binding = null
     }
 
-    fun setFilter(filter: FilterCharacters) {
+    fun isButtonClickHandled(): Boolean {
+        return isButtonClickHandled
+    }
+
+    private fun setFilter(filter: FilterCharacters) {
         viewModel.setFilter(filter)
         characterAdapter.submitList(null)
     }
 
-    fun cancelFilter(){
+    private fun cancelFilter(){
         characterAdapter.submitList(null)
         viewModel.cancelFilter()
-    }
-
-    private fun navigateToDetail(id: Int) {
-        val fragment = CharacterDetailFragment.startCharacterFragment(id)
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.recycler_view_container, fragment)
-            .addToBackStack(null)
-            .commit()
-    }
-
-    private fun snackbarType(snackbar: Snackbar){
-        snackbar.view.elevation = 100f
-        snackbar.view.z = 100f
-        snackbar.setActionTextColor(Color.BLACK)
-        snackbar.setBackgroundTint(Color.GRAY)
-        snackbar.show()
     }
 }

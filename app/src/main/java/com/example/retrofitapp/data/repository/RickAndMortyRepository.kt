@@ -1,224 +1,96 @@
 package com.example.retrofitapp.data.repository
 
-import com.example.retrofitapp.data.utils.RetrofitInstance
+import com.example.retrofitapp.data.remote.RickAndMortyApi
 import com.example.retrofitapp.domain.model.character.Characters
 import com.example.retrofitapp.domain.model.character.ResultsCharacter
 import com.example.retrofitapp.domain.model.episode.Episodes
 import com.example.retrofitapp.domain.model.episode.ResultsEpisode
 import com.example.retrofitapp.domain.model.location.Locations
 import com.example.retrofitapp.domain.model.location.ResultsLocation
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object RickAndMortyRepository {
+@Singleton
+class RickAndMortyRepository @Inject constructor(private val rickAndMortyApi: RickAndMortyApi) {
 
-    private val rickAndMortyApi = RetrofitInstance.getRickAndMortyApi()
-
-    fun getAllCharacters(page: Int, callback: (ApiResult<Characters>) -> Unit) {
-        val call = rickAndMortyApi.getAllCharacters(page)
-        call.enqueue(object : Callback<Characters> {
-            override fun onResponse(
-                call: Call<Characters>,
-                response: Response<Characters>
-            ) {
-                if (response.isSuccessful) {
-                    val data = response.body()
-                    if (data != null) {
-                        callback(ApiResult.Success(data))
-                    }
-                } else {
-                    callback(ApiResult.Error(response.message(), Throwable()))
-                }
-            }
-
-            override fun onFailure(call: Call<Characters>, t: Throwable) {
-                callback(ApiResult.Error(t.message, t))
-            }
-        })
+    suspend fun getAllCharacters(page: Int): ApiResult<Characters> {
+        return try {
+            val response = rickAndMortyApi.getAllCharacters(page)
+            ApiResult.Success(response)
+        } catch (e: Exception) {
+            ApiResult.Error(e.message, e)
+        }
     }
 
-
-    fun getCharacterInfo(id: Int, callback: (ApiResult<ResultsCharacter>) -> Unit) {
-        val call = rickAndMortyApi.getCharacterInfo(id)
-        call.enqueue(object : Callback<ResultsCharacter> {
-            override fun onResponse(
-                call: Call<ResultsCharacter>,
-                response: Response<ResultsCharacter>
-            ) {
-                if (response.isSuccessful) {
-                    val data = response.body()
-                    if (data != null) {
-                        callback(ApiResult.Success(data))
-                    }
-                } else {
-                    callback(ApiResult.Error(response.message(), Throwable()))
-                }
-            }
-
-            override fun onFailure(call: Call<ResultsCharacter>, t: Throwable) {
-                callback(ApiResult.Error(t.message, t))
-            }
-        })
+     suspend fun getCharacterInfo(id: Int): ApiResult<ResultsCharacter> {
+         return try {
+             val response = rickAndMortyApi.getCharacterInfo(id)
+             ApiResult.Success(response)
+         } catch (e: Exception) {
+             ApiResult.Error(e.message, e)
+         }
     }
 
-    fun getMultipleCharacters(ids: String, callback: (ApiResult<List<ResultsCharacter>>) -> Unit) {
-        val call = rickAndMortyApi.getMultipleCharacters(ids)
-        call.enqueue(object : Callback<List<ResultsCharacter>> {
-            override fun onResponse(
-                call: Call<List<ResultsCharacter>>,
-                response: Response<List<ResultsCharacter>>
-            ) {
-                if (response.isSuccessful) {
-                    val data = response.body()
-                    if (data != null) {
-                        callback(ApiResult.Success(data))
-                    }
-                } else {
-                    callback(ApiResult.Error(response.message(), Throwable()))
-                }
-            }
-            override fun onFailure(call: Call<List<ResultsCharacter>>, t: Throwable) {
-                callback(ApiResult.Error(t.message, t))
-            }
-        })
+     suspend fun getMultipleCharacters(ids: String): ApiResult<List<ResultsCharacter>>{
+         return try {
+             val response = rickAndMortyApi.getMultipleCharacters(ids)
+             ApiResult.Success(response)
+         } catch (e: Exception) {
+             ApiResult.Error(e.message, e)
+         }
     }
 
-    fun getFilteredCharacters(name: String, status: String, gender: String, species: String, page: Int,  callback: (ApiResult<Characters>) -> Unit) {
-        val call = rickAndMortyApi.getFilteredCharacters(name, status, gender, species, page)
-        call.enqueue(object : Callback<Characters> {
-            override fun onResponse(
-                call: Call<Characters>,
-                response: Response<Characters>
-            ) {
-                if (response.isSuccessful) {
-                    val data = response.body()
-                    if (data != null) {
-                        callback(ApiResult.Success(data))
-                    }
-                } else {
-                    callback(
-                        ApiResult.Error(
-                            "Error getting filtered characters. Response code: ${response.code()}, message: ${response.message()}",
-                            Throwable()
-                        )
-                    )
-                }
-            }
-
-            override fun onFailure(call: Call<Characters>, t: Throwable) {
-                callback(ApiResult.Error(t.message, t))
-            }
-        })
+     suspend fun getFilteredCharacters(name: String, status: String, gender: String, species: String, page: Int): ApiResult<Characters>{
+         return try {
+             val response = rickAndMortyApi.getFilteredCharacters(name, status, gender, species, page)
+             ApiResult.Success(response)
+         } catch (e: Exception) {
+             ApiResult.Error(e.message, e)
+         }
     }
 
-    fun getAllEpisodes(page: Int, callback: (ApiResult<Episodes>) -> Unit) {
-        val call = rickAndMortyApi.getAllEpisodes(page)
-        call.enqueue(object : Callback<Episodes> {
-            override fun onResponse(
-                call: Call<Episodes>,
-                response: Response<Episodes>
-            ) {
-                if (response.isSuccessful) {
-                    val data = response.body()
-                    if (data != null) {
-                        callback(ApiResult.Success(data))
-                    }
-                } else {
-                    callback(ApiResult.Error(response.message(), Throwable()))
-                }
-            }
-            override fun onFailure(call: Call<Episodes>, t: Throwable) {
-                callback(ApiResult.Error(t.message, t))
-            }
-        })
+    suspend fun getAllEpisodes(page: Int): ApiResult<Episodes>{
+        return try {
+            val response = rickAndMortyApi.getAllEpisodes(page)
+            ApiResult.Success(response)
+        } catch (e: Exception) {
+            ApiResult.Error(e.message, e)
+        }
     }
 
-    fun getEpisodeInfo(id: Int, callback: (ApiResult<ResultsEpisode>) -> Unit) {
-        val call = rickAndMortyApi.getEpisodeInfo(id)
-        call.enqueue(object : Callback<ResultsEpisode> {
-            override fun onResponse(
-                call: Call<ResultsEpisode>,
-                response: Response<ResultsEpisode>
-            ) {
-                if (response.isSuccessful) {
-                    val data = response.body()
-                    if (data != null) {
-                        callback(ApiResult.Success(data))
-                    }
-                } else {
-                    callback(ApiResult.Error(response.message(), Throwable()))
-                }
-            }
-            override fun onFailure(call: Call<ResultsEpisode>, t: Throwable) {
-                callback(ApiResult.Error(t.message, t))
-            }
-        })
+    suspend fun getEpisodeInfo(id: Int): ApiResult<ResultsEpisode>{
+        return try {
+            val response = rickAndMortyApi.getEpisodeInfo(id)
+            ApiResult.Success(response)
+        } catch (e: Exception) {
+            ApiResult.Error(e.message, e)
+        }
     }
 
-    fun getMultipleEpisodes(ids: String, callback: (ApiResult<List<ResultsEpisode>>) -> Unit) {
-        val call = rickAndMortyApi.getMultipleEpisodes(ids)
-        call.enqueue(object : Callback<List<ResultsEpisode>> {
-            override fun onResponse(
-                call: Call<List<ResultsEpisode>>,
-                response: Response<List<ResultsEpisode>>
-            ) {
-                if (response.isSuccessful) {
-                    val data = response.body()
-                    if (data != null) {
-                        callback(ApiResult.Success(data))
-                    }
-                } else {
-                    callback(ApiResult.Error(response.message(), Throwable()))
-                }
-            }
-            override fun onFailure(call: Call<List<ResultsEpisode>>, t: Throwable) {
-                callback(ApiResult.Error(t.message, t))
-            }
-        })
+    suspend fun getMultipleEpisodes(ids: String): ApiResult<List<ResultsEpisode>>{
+        return try {
+            val response = rickAndMortyApi.getMultipleEpisodes(ids)
+            ApiResult.Success(response)
+        } catch (e: Exception) {
+            ApiResult.Error(e.message, e)
+        }
     }
 
-    fun getAllLocations(page: Int, callback: (ApiResult<Locations>) -> Unit) {
-        val call = rickAndMortyApi.getAllLocations(page)
-        call.enqueue(object : Callback<Locations> {
-            override fun onResponse(
-                call: Call<Locations>,
-                response: Response<Locations>
-            ) {
-                if (response.isSuccessful) {
-                    val data = response.body()
-                    if (data != null) {
-                        callback(ApiResult.Success(data))
-                    }
-                } else {
-                    callback(ApiResult.Error(response.message(), Throwable()))
-                }
-            }
-            override fun onFailure(call: Call<Locations>, t: Throwable) {
-                callback(ApiResult.Error(t.message, t))
-            }
-        })
+    suspend fun getAllLocations(page: Int): ApiResult<Locations>{
+        return try {
+            val response = rickAndMortyApi.getAllLocations(page)
+            ApiResult.Success(response)
+        } catch (e: Exception) {
+            ApiResult.Error(e.message, e)
+        }
     }
 
-    fun getLocationInfo(id: Int, callback: (ApiResult<ResultsLocation>) -> Unit) {
-        val call = rickAndMortyApi.getLocationInfo(id)
-        call.enqueue(object : Callback<ResultsLocation> {
-            override fun onResponse(
-                call: Call<ResultsLocation>,
-                response: Response<ResultsLocation>
-            ) {
-                if (response.isSuccessful) {
-                    val data = response.body()
-                    if (data != null) {
-                        callback(ApiResult.Success(data))
-                    }
-                } else {
-                    callback(ApiResult.Error(response.message(), Throwable()))
-                }
-            }
-            override fun onFailure(call: Call<ResultsLocation>, t: Throwable) {
-                callback(ApiResult.Error(t.message, t))
-            }
-        })
+    suspend fun getLocationInfo(id: Int): ApiResult<ResultsLocation>{
+        return try {
+            val response = rickAndMortyApi.getLocationInfo(id)
+            ApiResult.Success(response)
+        } catch (e: Exception) {
+            ApiResult.Error(e.message, e)
+        }
     }
 }

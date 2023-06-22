@@ -16,6 +16,13 @@
         android:text="@string/filter"
         android:layout_margin="10dp" />
 
+    <Button
+        android:id="@+id/open_settings_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        android:layout_margin="10dp" />
+
     <androidx.recyclerview.widget.RecyclerView
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"

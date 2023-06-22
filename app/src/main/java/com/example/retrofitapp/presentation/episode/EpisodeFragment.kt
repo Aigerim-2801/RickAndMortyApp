@@ -7,14 +7,19 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.EpisodeFragmentBinding
 import com.example.retrofitapp.adapters.EpisodeAdapter
+import com.example.retrofitapp.data.utils.Const
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class EpisodeFragment : Fragment(){
 
     private var _binding: EpisodeFragmentBinding? = null
@@ -38,10 +43,6 @@ class EpisodeFragment : Fragment(){
         binding.episodesRv.layoutManager = layoutManager
         binding.episodesRv.adapter = episodeAdapter
 
-        viewModel.episodesMutableLiveData.observe(viewLifecycleOwner) { episodes ->
-            episodeAdapter.submitList(episodes)
-        }
-
         binding.episodesRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -64,7 +65,13 @@ class EpisodeFragment : Fragment(){
             }
         })
 
-        episodeAdapter.onEpisodeClick = { navigateToDetail(it.id) }
+        episodeAdapter.onEpisodeClick = { episode->
+            val bundle = Bundle().apply {
+                putInt(Const.EPISODE_ID, episode.id)
+            }
+            val navController = findNavController()
+            navController.navigate(R.id.action_episodeFragment_to_episodeDetailFragment, bundle)
+        }
 
         val dividerItemDecoration = DividerItemDecoration(
             binding.episodesRv.context,
@@ -82,16 +89,17 @@ class EpisodeFragment : Fragment(){
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        lifecycleScope.launch {
+            viewModel.episodesStateFlow.collect{
+                episodeAdapter.submitList(it)
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun navigateToDetail(id: Int) {
-        val fragment = EpisodeDetailFragment.startEpisodeFragment(id)
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.recycler_view_container, fragment)
-            .addToBackStack(null)
-            .commit()
     }
 }

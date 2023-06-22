@@ -11,13 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:background="#F2F2F7">
+        android:gravity="center_horizontal">
     <TextView
         android:id="@+id/type_location_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/grey"
         android:layout_marginTop="20dp"
         android:textSize="12sp" />
 
@@ -26,7 +24,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxWidth="200dp"
-        android:textColor="@color/black"
         android:gravity="center"
         android:textSize="16sp" />
 
@@ -34,7 +31,6 @@
         android:id="@+id/dimension_location_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/grey"
         android:textAllCaps="true"
         android:layout_marginBottom="20dp"
         android:textSize="13sp" />
@@ -43,7 +39,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#8E8E93"
         android:text="@string/informations"
         android:layout_marginTop="15dp"
         android:layout_marginStart="15dp"

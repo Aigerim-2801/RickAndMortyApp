@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.LocationDetailBinding
 import com.example.retrofitapp.adapters.CharacterAdapter
-import com.example.retrofitapp.presentation.character.CharacterDetailFragment
-import com.example.retrofitapp.presentation.character.ViewModelFactory
+import com.example.retrofitapp.data.utils.Const
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class LocationDetailFragment : Fragment() {
 
     private var _binding: LocationDetailBinding?= null
@@ -20,7 +23,15 @@ class LocationDetailFragment : Fragment() {
 
     private val characterAdapter = CharacterAdapter()
 
-    private lateinit var viewModel: LocationDetailViewModel
+    @Inject
+    lateinit var assistedFactory: LocationDetailViewModel.LocationDetailFactory
+
+    private val viewModel: LocationDetailViewModel by viewModels {
+        LocationDetailViewModel.LocationDetailViewModelFactory(
+            assistedFactory,
+            arguments?.getInt(Const.LOCATION_ID, -1) ?: -1
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,18 +44,19 @@ class LocationDetailFragment : Fragment() {
         binding.locationCharacterRv.layoutManager = layoutManager
         binding.locationCharacterRv.adapter = characterAdapter
 
-        val locationId = arguments?.getInt(LOCATION_ID, -1) ?: -1
-
-        val viewModelFactory = ViewModelFactory(locationId)
-        viewModel = ViewModelProvider(this, viewModelFactory)[LocationDetailViewModel::class.java]
-
         viewModel.characterMutableLiveData.observe(viewLifecycleOwner) {
             characterAdapter.submitList(it)
         }
 
         observeCharacter()
 
-        characterAdapter.onCharacterClick = { navigateToCharacterDetail(it.id) }
+        characterAdapter.onCharacterClick = { character->
+            val bundle = Bundle().apply {
+                putInt(Const.CHARACTER_ID, character.id)
+            }
+            val navController = findNavController()
+            navController.navigate(R.id.action_locationDetailFragment_to_characterDetailFragment, bundle)
+        }
 
         return binding.root
     }
@@ -54,26 +66,6 @@ class LocationDetailFragment : Fragment() {
             binding.typeLocationDetail.text = locations.type
             binding.nameLocationDetail.text = locations.name
             binding.dimensionLocationDetail.text = locations.dimension
-        }
-    }
-
-    private fun navigateToCharacterDetail(id: Int){
-        val fragment = CharacterDetailFragment.startCharacterFragment(id)
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.recycler_view_container, fragment)
-            .addToBackStack(null)
-            .commit()
-    }
-
-    companion object {
-        private const val LOCATION_ID = "location_id"
-        fun startLocationFragment(locationId: Int): LocationDetailFragment {
-            val args = Bundle().apply {
-                putInt(LOCATION_ID, locationId)
-            }
-            return LocationDetailFragment().apply {
-                arguments = args
-            }
         }
     }
 }

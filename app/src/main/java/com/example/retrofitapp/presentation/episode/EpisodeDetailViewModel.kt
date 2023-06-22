@@ -1,17 +1,17 @@
 package com.example.retrofitapp.presentation.episode
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.retrofitapp.domain.model.character.ResultsCharacter
 import com.example.retrofitapp.domain.model.episode.ResultsEpisode
 import com.example.retrofitapp.data.repository.ApiResult
 import com.example.retrofitapp.data.repository.RickAndMortyRepository
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import kotlinx.coroutines.launch
+import dagger.assisted.AssistedInject
 
-class EpisodeDetailViewModel(id: Int) : ViewModel() {
-
-    private val rickAndMortyRepository = RickAndMortyRepository
+class EpisodeDetailViewModel @AssistedInject constructor(@Assisted private val id: Int, private val rickAndMortyRepository: RickAndMortyRepository) : ViewModel() {
 
     private val _characterMutableLiveData = MutableLiveData<List<ResultsCharacter>>()
     val characterMutableLiveData: LiveData<List<ResultsCharacter>> = _characterMutableLiveData
@@ -24,10 +24,10 @@ class EpisodeDetailViewModel(id: Int) : ViewModel() {
     }
 
     private fun getEpisodeInfo(id: Int){
-        rickAndMortyRepository.getEpisodeInfo(id){ result ->
-            when (result) {
+        viewModelScope.launch {
+            when (val result = rickAndMortyRepository.getEpisodeInfo(id)) {
                 is ApiResult.Success -> {
-                    _episodes.value = result.value
+                    this@EpisodeDetailViewModel._episodes.value = result.value
                     getMultipleCharacters(result.value.characters)
                 }
                 is ApiResult.Error -> {
@@ -47,10 +47,11 @@ class EpisodeDetailViewModel(id: Int) : ViewModel() {
         if (urls.isNotEmpty()) {
             val lastElements = urls.map { it.substring(it.lastIndexOf("/") + 1) }
             val ids = lastElements.joinToString(separator = ",")
-            rickAndMortyRepository.getMultipleCharacters(ids) { result ->
-                when (result) {
+
+            viewModelScope.launch {
+                when (val result = rickAndMortyRepository.getMultipleCharacters(ids)) {
                     is ApiResult.Success -> {
-                        _characterMutableLiveData.value = result.value
+                        this@EpisodeDetailViewModel._characterMutableLiveData.value = result.value
                     }
                     is ApiResult.Error -> {
                         val errorMessage = result.message
@@ -63,6 +64,21 @@ class EpisodeDetailViewModel(id: Int) : ViewModel() {
                     }
                 }
             }
+        }
+    }
+
+
+    @AssistedFactory
+    interface EpisodeDetailFactory {
+        fun create(episodeId: Int): EpisodeDetailViewModel
+    }
+
+    class EpisodeDetailViewModelFactory(
+        private val assistedFactory: EpisodeDetailFactory,
+        private val episodeId: Int,
+    ) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return assistedFactory.create(episodeId) as T
         }
     }
 }

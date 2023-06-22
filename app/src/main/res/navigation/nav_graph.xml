@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/nav_graph"
+app:startDestination="@id/characterFragment">
+
+    <fragment
+        android:id="@+id/characterFragment"
+        android:name="com.example.retrofitapp.presentation.character.CharacterFragment"
+        android:label="Character Fragment"
+        tools:layout="@layout/character_fragment">
+        <action
+            android:id="@+id/action_characterFragment_to_characterDetailFragment"
+            app:destination="@id/characterDetailFragment" />
+        <action
+            android:id="@+id/action_characterFragment_to_favoriteFragment"
+            app:destination="@id/favoriteFragment" />
+
+        <action
+            android:id="@+id/action_favoriteFragment_to_characterDetailFragment"
+            app:destination="@id/characterDetailFragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/characterDetailFragment"
+        android:name="com.example.retrofitapp.presentation.character.CharacterDetailFragment"
+        android:label="Character Detail Fragment"
+        tools:layout="@layout/character_detail" >
+
+        <action
+            android:id="@+id/action_characterDetailFragment_to_episodeDetailFragment"
+            app:destination="@id/episodeDetailFragment" />
+
+        <action
+            android:id="@+id/action_characterDetailFragment_to_locationDetailFragment"
+            app:destination="@id/locationDetailFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/episodeFragment"
+        android:name="com.example.retrofitapp.presentation.episode.EpisodeFragment"
+        android:label="Episode Fragment"
+        tools:layout="@layout/episode_fragment">
+
+        <action
+            android:id="@+id/action_episodeFragment_to_episodeDetailFragment"
+            app:destination="@id/episodeDetailFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/episodeDetailFragment"
+        android:name="com.example.retrofitapp.presentation.episode.EpisodeDetailFragment"
+        android:label="Episode Detail Fragment"
+        tools:layout="@layout/episode_detail" >
+
+        <action
+            android:id="@+id/action_episodeDetailFragment_to_characterDetailFragment"
+            app:destination="@id/characterDetailFragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/locationFragment"
+        android:name="com.example.retrofitapp.presentation.location.LocationFragment"
+        android:label="Location Fragment"
+        tools:layout="@layout/location_fragment" >
+
+        <action
+            android:id="@+id/action_locationFragment_to_locationDetailFragment"
+            app:destination="@id/locationDetailFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/locationDetailFragment"
+        android:name="com.example.retrofitapp.presentation.location.LocationDetailFragment"
+        android:label="Location Detail Fragment"
+        tools:layout="@layout/location_detail" >
+
+        <action
+            android:id="@+id/action_locationDetailFragment_to_characterDetailFragment"
+            app:destination="@id/characterDetailFragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.example.retrofitapp.presentation.favorite.FavoriteFragment"
+        android:label="Favorite Fragment"
+        tools:layout="@layout/favorite_fragment" >
+
+        <action
+            android:id="@+id/action_favoriteFragment_to_characterDetailFragment"
+            app:destination="@id/characterDetailFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/filterBottomSheetFragment"
+        android:name="com.example.retrofitapp.presentation.filter.FilterBottomSheetFragment"
+        android:label="Filter Bottom Sheet Fragment"
+        tools:layout="@layout/filter_bottom_sheet" >
+
+        <action
+            android:id="@+id/action_filterBottomSheetFragment_to_characterFragment"
+            app:destination="@id/characterFragment" />
+    </fragment>
+
+</navigation>

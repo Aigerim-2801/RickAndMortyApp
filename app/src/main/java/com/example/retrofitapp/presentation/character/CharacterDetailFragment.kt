@@ -7,24 +7,36 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.retrofitapp.R
-import com.example.retrofitapp.presentation.episode.EpisodeDetailFragment
-import com.example.retrofitapp.presentation.location.LocationDetailFragment
 import com.example.retrofitapp.adapters.EpisodeAdapter
 import com.example.retrofitapp.data.repository.ApiResult
+import com.example.retrofitapp.data.utils.Const
 import com.example.retrofitapp.databinding.CharacterDetailBinding
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class CharacterDetailFragment : Fragment() {
 
     private var _binding: CharacterDetailBinding ?= null
     private val binding get() = _binding!!
 
     private val episodeAdapter = EpisodeAdapter()
-    private lateinit var viewModel: CharacterDetailViewModel
+
+    @Inject
+    lateinit var assistedFactory: CharacterDetailViewModel.CharacterDetailFactory
+
+    private val viewModel: CharacterDetailViewModel by viewModels {
+        CharacterDetailViewModel.CharacterDetailViewModelFactory(
+            assistedFactory,
+            arguments?.getInt(Const.CHARACTER_ID, -1) ?: -1
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,11 +48,6 @@ class CharacterDetailFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireContext())
         binding.contentCharacter.episodesRV.layoutManager = layoutManager
         binding.contentCharacter.episodesRV.adapter = episodeAdapter
-
-        val characterId = arguments?.getInt(CHARACTER_ID, -1) ?: -1
-
-        val viewModelFactory = ViewModelFactory(characterId)
-        viewModel = ViewModelProvider(this, viewModelFactory)[CharacterDetailViewModel::class.java]
 
         viewModel.episodes.observe(viewLifecycleOwner) { result ->
             when (result) {
@@ -61,7 +68,13 @@ class CharacterDetailFragment : Fragment() {
 
         observeCharacter()
 
-        episodeAdapter.onEpisodeClick = { navigateToEpisode(it.id) }
+        episodeAdapter.onEpisodeClick = { episode->
+            val bundle = Bundle().apply {
+                putInt(Const.EPISODE_ID, episode.id)
+            }
+            val navController = findNavController()
+            navController.navigate(R.id.action_characterDetailFragment_to_episodeDetailFragment, bundle)
+        }
 
         val dividerItemDecoration = DividerItemDecoration(
             binding.contentCharacter.episodesRV.context,
@@ -84,23 +97,6 @@ class CharacterDetailFragment : Fragment() {
         _binding = null
     }
 
-    private fun navigateToEpisode(episodeId: Int) {
-        val fragment = EpisodeDetailFragment.startEpisodeFragment(episodeId)
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.recycler_view_container, fragment)
-            .addToBackStack(null)
-            .commit()
-    }
-
-    private fun navigateToLocation(locationId: Int) {
-        val fragment = LocationDetailFragment.startLocationFragment(locationId)
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.recycler_view_container, fragment)
-            .addToBackStack(null)
-            .commit()
-    }
-
-
     private fun observeCharacter() {
         viewModel.characterInfoLiveData.observe(viewLifecycleOwner) { character ->
             Glide.with(this@CharacterDetailFragment).load(character.image)
@@ -116,21 +112,13 @@ class CharacterDetailFragment : Fragment() {
 
             binding.contentCharacter.btnLocation.setOnClickListener {
                 val locationId = viewModel.getIdUrl(character.location.url)
-                 navigateToLocation(locationId.toInt())
+                val bundle = Bundle().apply {
+                    putInt(Const.LOCATION_ID, locationId.toInt())
+                }
+                val navController = findNavController()
+                navController.navigate(R.id.action_characterDetailFragment_to_locationDetailFragment, bundle)
             }
 
-        }
-    }
-
-    companion object {
-        private const val CHARACTER_ID = "character_id"
-        fun startCharacterFragment(characterId: Int): CharacterDetailFragment {
-            val args = Bundle().apply {
-                putInt(CHARACTER_ID, characterId)
-            }
-            return CharacterDetailFragment().apply {
-                arguments = args
-            }
         }
     }
 }
