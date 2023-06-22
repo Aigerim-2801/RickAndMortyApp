@@ -11,6 +11,8 @@
 ### *Logging Interceptor*
 ### *Handling api responses*
 ### *List Adapter*
+### *RecyclerView*
+### *Glide*
 ### *Pagination*
 ### *Filter with pagination*
 ### *Favorite characters*
