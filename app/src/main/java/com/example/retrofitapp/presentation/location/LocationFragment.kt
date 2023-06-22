@@ -14,9 +14,11 @@ import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.LocationFragmentBinding
 import com.example.retrofitapp.adapters.LocationAdapter
 import com.example.retrofitapp.data.utils.Const
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class LocationFragment : Fragment(R.layout.location_item) {
 
     private var _binding: LocationFragmentBinding? = null

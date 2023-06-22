@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginBottom="75dp"
-        tools:context=".presentation.FavoriteFragment">
+        tools:context=".presentation.favorite.FavoriteFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"

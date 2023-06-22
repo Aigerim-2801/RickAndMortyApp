@@ -8,14 +8,16 @@ import com.example.retrofitapp.domain.model.character.FilterCharacters
 import com.example.retrofitapp.domain.model.character.ResultsCharacter
 import com.example.retrofitapp.data.repository.ApiResult
 import com.example.retrofitapp.data.repository.RickAndMortyRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CharacterViewModel : ViewModel() {
+@HiltViewModel
+class CharacterViewModel @Inject constructor(private val rickAndMortyRepository: RickAndMortyRepository) : ViewModel() {
 
     private var currentPage = 1
-    private val rickAndMortyRepository = RickAndMortyRepository
 
     private var isFilterApplied: Boolean = false
 

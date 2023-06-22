@@ -16,8 +16,10 @@ import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.EpisodeFragmentBinding
 import com.example.retrofitapp.adapters.EpisodeAdapter
 import com.example.retrofitapp.data.utils.Const
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class EpisodeFragment : Fragment(){
 
     private var _binding: EpisodeFragmentBinding? = null

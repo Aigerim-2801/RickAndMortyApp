@@ -92,7 +92,7 @@ app:startDestination="@id/characterFragment">
 
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.example.retrofitapp.presentation.FavoriteFragment"
+        android:name="com.example.retrofitapp.presentation.favorite.FavoriteFragment"
         android:label="Favorite Fragment"
         tools:layout="@layout/favorite_fragment" >
 
@@ -104,7 +104,7 @@ app:startDestination="@id/characterFragment">
 
     <fragment
         android:id="@+id/filterBottomSheetFragment"
-        android:name="com.example.retrofitapp.presentation.FilterBottomSheetFragment"
+        android:name="com.example.retrofitapp.presentation.filter.FilterBottomSheetFragment"
         android:label="Filter Bottom Sheet Fragment"
         tools:layout="@layout/filter_bottom_sheet" >
 

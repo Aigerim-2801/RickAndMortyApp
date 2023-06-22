@@ -1,16 +1,17 @@
 package com.example.retrofitapp.data.repository
 
-import com.example.retrofitapp.data.utils.RetrofitInstance
+import com.example.retrofitapp.data.remote.RickAndMortyApi
 import com.example.retrofitapp.domain.model.character.Characters
 import com.example.retrofitapp.domain.model.character.ResultsCharacter
 import com.example.retrofitapp.domain.model.episode.Episodes
 import com.example.retrofitapp.domain.model.episode.ResultsEpisode
 import com.example.retrofitapp.domain.model.location.Locations
 import com.example.retrofitapp.domain.model.location.ResultsLocation
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object RickAndMortyRepository {
-
-    private val rickAndMortyApi = RetrofitInstance.getRickAndMortyApi()
+@Singleton
+class RickAndMortyRepository @Inject constructor(private val rickAndMortyApi: RickAndMortyApi) {
 
     suspend fun getAllCharacters(page: Int): ApiResult<Characters> {
         return try {

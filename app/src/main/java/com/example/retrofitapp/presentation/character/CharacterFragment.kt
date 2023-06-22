@@ -15,25 +15,27 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.CharacterFragmentBinding
-import com.example.retrofitapp.presentation.FilterBottomSheetFragment
+import com.example.retrofitapp.presentation.filter.FilterBottomSheetFragment
 import com.example.retrofitapp.adapters.CharacterAdapter
 import com.example.retrofitapp.data.remote.CharactersDao
 import com.example.retrofitapp.data.utils.CharactersDatabase
 import com.example.retrofitapp.data.utils.Const
 import com.example.retrofitapp.domain.model.character.FilterCharacters
-import com.example.retrofitapp.presentation.FilterBottomSheetFragment.Companion.FILTER_KEY
-import com.example.retrofitapp.presentation.FilterBottomSheetFragment.Companion.PAIRS_KEY
-import com.example.retrofitapp.presentation.FilterBottomSheetFragment.Companion.REQUEST_KEY
-import com.example.retrofitapp.presentation.SettingsActivity
+import com.example.retrofitapp.presentation.filter.FilterBottomSheetFragment.Companion.FILTER_KEY
+import com.example.retrofitapp.presentation.filter.FilterBottomSheetFragment.Companion.PAIRS_KEY
+import com.example.retrofitapp.presentation.filter.FilterBottomSheetFragment.Companion.REQUEST_KEY
+import com.example.retrofitapp.presentation.settings.SettingsActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class CharacterFragment : Fragment() {
 
     private var _binding: CharacterFragmentBinding? = null
     private val binding get() = _binding!!
     private val characterAdapter = CharacterAdapter()
-    private val viewModel: CharacterViewModel by viewModels()
+
+    private val viewModel by viewModels<CharacterViewModel>()
 
     private var loading = false
     private var previousTotalItemCount = 0

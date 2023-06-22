@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.SettingsActivity"
+            android:name=".presentation.settings.SettingsActivity"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"

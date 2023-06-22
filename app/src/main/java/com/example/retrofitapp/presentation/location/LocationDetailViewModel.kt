@@ -9,11 +9,12 @@ import com.example.retrofitapp.domain.model.character.ResultsCharacter
 import com.example.retrofitapp.domain.model.location.ResultsLocation
 import com.example.retrofitapp.data.repository.ApiResult
 import com.example.retrofitapp.data.repository.RickAndMortyRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LocationDetailViewModel(id: Int) : ViewModel() {
-
-    private val rickAndMortyRepository = RickAndMortyRepository
+@HiltViewModel
+class LocationDetailViewModel @Inject constructor(id: Int, private val rickAndMortyRepository: RickAndMortyRepository) : ViewModel() {
 
     private val _characterMutableLiveData: MutableLiveData<List<ResultsCharacter>> = MutableLiveData()
     val characterMutableLiveData: LiveData<List<ResultsCharacter>> = _characterMutableLiveData

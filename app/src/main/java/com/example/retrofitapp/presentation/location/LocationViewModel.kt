@@ -6,15 +6,17 @@ import androidx.lifecycle.viewModelScope
 import com.example.retrofitapp.domain.model.location.ResultsLocation
 import com.example.retrofitapp.data.repository.ApiResult
 import com.example.retrofitapp.data.repository.RickAndMortyRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-class LocationViewModel : ViewModel() {
+@HiltViewModel
+class LocationViewModel @Inject constructor(private val rickAndMortyRepository: RickAndMortyRepository) : ViewModel() {
 
     private var currentPage = 1
-    private val rickAndMortyRepository = RickAndMortyRepository
 
     private val _locationsMutableStateFlow = MutableStateFlow<List<ResultsLocation>>(emptyList())
     val locationsStateFlow: StateFlow<List<ResultsLocation>> = _locationsMutableStateFlow

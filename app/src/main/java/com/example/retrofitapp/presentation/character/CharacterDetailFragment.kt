@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -17,14 +18,20 @@ import com.example.retrofitapp.adapters.EpisodeAdapter
 import com.example.retrofitapp.data.repository.ApiResult
 import com.example.retrofitapp.data.utils.Const
 import com.example.retrofitapp.databinding.CharacterDetailBinding
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class CharacterDetailFragment : Fragment() {
 
     private var _binding: CharacterDetailBinding ?= null
     private val binding get() = _binding!!
 
     private val episodeAdapter = EpisodeAdapter()
-    private lateinit var viewModel: CharacterDetailViewModel
+    private val viewModel by viewModels<CharacterDetailViewModel>()
+
+//    @Inject
+//    val characterId: Int = arguments?.getInt(Const.CHARACTER_ID, -1) ?: -1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,10 +44,10 @@ class CharacterDetailFragment : Fragment() {
         binding.contentCharacter.episodesRV.layoutManager = layoutManager
         binding.contentCharacter.episodesRV.adapter = episodeAdapter
 
-        val characterId = arguments?.getInt(Const.CHARACTER_ID, -1) ?: -1
+//        val characterId = arguments?.getInt(Const.CHARACTER_ID, -1) ?: -1
 
-        val viewModelFactory = ViewModelFactory(characterId, requireContext())
-        viewModel = ViewModelProvider(this, viewModelFactory)[CharacterDetailViewModel::class.java]
+//        val viewModelFactory = ViewModelFactory(characterId, requireContext())
+//        viewModel = ViewModelProvider(this, viewModelFactory)[CharacterDetailViewModel::class.java]
 
         viewModel.episodes.observe(viewLifecycleOwner) { result ->
             when (result) {
