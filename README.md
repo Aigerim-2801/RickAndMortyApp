@@ -1,21 +1,20 @@
-# **RetrofitApp**
+# **Rick And Morty App**
 ## *Clean Architecture*
-## *Single-Activity Architecture*
-## *Observer, Singelton patterns*
-## *MVVM*
-### *View Binding*
+## *MVVM with Coroutines, Flow, LiveData*
+## *Retrofit*
+## *Room library*
+## *Shared Preferences*
+## *Hilt*
+## *Jetpack Navigation*
+## *Bottom Navigation*
+### *Bottom Sheet Dialog*
 ### *Logging Interceptor*
 ### *Handling api responses*
-### *Bottom Sheet Dialog*
 ### *List Adapter*
 ### *Pagination*
 ### *Filter with pagination*
-### *Saving selected filter and throw it*
-### *Snackbar for delete and undo*
-
-### *SQLite*
-
-
+### *Favorite characters*
+### *Theme Settings*
 
 
 https://user-images.githubusercontent.com/71035129/231138356-d066114a-f5d3-4fc0-bb13-7509a8d56c33.mp4
