@@ -19,5 +19,5 @@
 ### *Theme Settings*
 
 
-https://user-images.githubusercontent.com/71035129/231138356-d066114a-f5d3-4fc0-bb13-7509a8d56c33.mp4
+https://github.com/Aigerim-2801/RickAndMortyApp/assets/71035129/e844a458-a271-43b8-b49e-8618f128101f
 
