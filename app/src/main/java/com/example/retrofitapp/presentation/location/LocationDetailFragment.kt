@@ -5,17 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.LocationDetailBinding
 import com.example.retrofitapp.adapters.CharacterAdapter
 import com.example.retrofitapp.data.utils.Const
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
-@AndroidEntryPoint
 class LocationDetailFragment : Fragment() {
 
     private var _binding: LocationDetailBinding?= null
@@ -23,12 +21,8 @@ class LocationDetailFragment : Fragment() {
 
     private val characterAdapter = CharacterAdapter()
 
-    @Inject
-    lateinit var assistedFactory: LocationDetailViewModel.LocationDetailFactory
-
-    private val viewModel: LocationDetailViewModel by viewModels {
-        LocationDetailViewModel.LocationDetailViewModelFactory(
-            assistedFactory,
+    private val viewModel: LocationDetailViewModel by viewModel {
+        parametersOf(
             arguments?.getInt(Const.LOCATION_ID, -1) ?: -1
         )
     }

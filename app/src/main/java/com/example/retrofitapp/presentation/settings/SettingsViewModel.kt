@@ -3,11 +3,7 @@ package com.example.retrofitapp.presentation.settings
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
-
-@HiltViewModel
-class SettingsViewModel @Inject constructor(
+class SettingsViewModel (
     private val sharedPreferences: SharedPreferences
 ): ViewModel() {
 
@@ -25,3 +21,5 @@ class SettingsViewModel @Inject constructor(
         }
     }
 }
+//io thread
+//interface for sharedp

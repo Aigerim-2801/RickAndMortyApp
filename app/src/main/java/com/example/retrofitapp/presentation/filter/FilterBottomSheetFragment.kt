@@ -15,10 +15,8 @@ import com.example.retrofitapp.domain.model.character.FilterCharacters
 import com.example.retrofitapp.domain.model.character.Gender
 import com.example.retrofitapp.domain.model.character.Status
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import dagger.hilt.android.AndroidEntryPoint
 import java.io.Serializable
 
-@AndroidEntryPoint
 class FilterBottomSheetFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FilterBottomSheetBinding
 

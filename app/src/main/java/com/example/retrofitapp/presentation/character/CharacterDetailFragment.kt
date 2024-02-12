@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,10 +16,9 @@ import com.example.retrofitapp.adapters.EpisodeAdapter
 import com.example.retrofitapp.data.repository.ApiResult
 import com.example.retrofitapp.data.utils.Const
 import com.example.retrofitapp.databinding.CharacterDetailBinding
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
-@AndroidEntryPoint
 class CharacterDetailFragment : Fragment() {
 
     private var _binding: CharacterDetailBinding ?= null
@@ -28,12 +26,8 @@ class CharacterDetailFragment : Fragment() {
 
     private val episodeAdapter = EpisodeAdapter()
 
-    @Inject
-    lateinit var assistedFactory: CharacterDetailViewModel.CharacterDetailFactory
-
-    private val viewModel: CharacterDetailViewModel by viewModels {
-        CharacterDetailViewModel.CharacterDetailViewModelFactory(
-            assistedFactory,
+    private val viewModel: CharacterDetailViewModel by viewModel {
+        parametersOf(
             arguments?.getInt(Const.CHARACTER_ID, -1) ?: -1
         )
     }

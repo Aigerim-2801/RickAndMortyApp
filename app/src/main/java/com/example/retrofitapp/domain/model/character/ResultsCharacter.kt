@@ -20,3 +20,4 @@ data class ResultsCharacter(
     val created: String,
     @ColumnInfo(name = "is_favorite") var isFavorite: Boolean
 )
+//use 2 data classes for room and retrofit

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -16,17 +15,16 @@ import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.EpisodeFragmentBinding
 import com.example.retrofitapp.adapters.EpisodeAdapter
 import com.example.retrofitapp.data.utils.Const
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class EpisodeFragment : Fragment(){
 
     private var _binding: EpisodeFragmentBinding? = null
     private val binding get() = _binding!!
 
     private val episodeAdapter = EpisodeAdapter()
-    private val viewModel: EpisodeViewModel by viewModels()
+    private val viewModel by viewModel<EpisodeViewModel>()
 
     private var loading = false
     private var previousTotalItemCount = 0

@@ -14,18 +14,16 @@ import com.example.retrofitapp.R
 import com.example.retrofitapp.databinding.LocationFragmentBinding
 import com.example.retrofitapp.adapters.LocationAdapter
 import com.example.retrofitapp.data.utils.Const
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
-@AndroidEntryPoint
 class LocationFragment : Fragment(R.layout.location_item) {
 
     private var _binding: LocationFragmentBinding? = null
     private val binding get() = _binding!!
 
     private val locationAdapter = LocationAdapter()
-    private val viewModel: LocationViewModel by viewModels()
+    private val viewModel by viewModel<LocationViewModel>()
 
     private var loading = false
     private var previousTotalItemCount = 0

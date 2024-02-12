@@ -4,10 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.retrofitapp.databinding.ActivitySplashBinding
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 
-@AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySplashBinding

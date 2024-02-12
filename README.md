@@ -5,6 +5,7 @@
 ## *Room library*
 ## *Shared Preferences*
 ## *Hilt*
+## *Koin*
 ## *Jetpack Navigation*
 ## *Bottom Navigation*
 ### *Bottom Sheet Dialog*

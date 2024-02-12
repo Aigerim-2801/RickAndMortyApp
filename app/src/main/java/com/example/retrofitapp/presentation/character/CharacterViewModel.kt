@@ -7,14 +7,11 @@ import com.example.retrofitapp.domain.model.character.FilterCharacters
 import com.example.retrofitapp.domain.model.character.ResultsCharacter
 import com.example.retrofitapp.data.repository.ApiResult
 import com.example.retrofitapp.data.repository.RickAndMortyRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class CharacterViewModel @Inject constructor(private val rickAndMortyRepository: RickAndMortyRepository) : ViewModel() {
+class CharacterViewModel (private val rickAndMortyRepository: RickAndMortyRepository) : ViewModel() {
 
     private var currentPage = 1
 
@@ -86,18 +83,8 @@ class CharacterViewModel @Inject constructor(private val rickAndMortyRepository:
                     if (currentPage == 1) {
                         updatedList.clear()
                     }
-                    val tempList = updatedList.toMutableList().apply {
-                        addAll(result.value.results)
-                    }
-
-                    val currentList = tempList.toList()
-                    val resultedList = currentList.map {
-                        favoriteList.firstOrNull { character ->
-                            character.id == it.id
-                        } ?: it
-                    }
-
-                    _charactersMutableStateFlow.value = resultedList
+                    updatedList.addAll(result.value.results)
+                    _charactersMutableStateFlow.value = updatedList
 
                     currentPage++
                 }

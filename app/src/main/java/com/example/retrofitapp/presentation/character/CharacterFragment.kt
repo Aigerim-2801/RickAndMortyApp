@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -23,18 +22,17 @@ import com.example.retrofitapp.presentation.filter.FilterBottomSheetFragment.Com
 import com.example.retrofitapp.presentation.filter.FilterBottomSheetFragment.Companion.PAIRS_KEY
 import com.example.retrofitapp.presentation.filter.FilterBottomSheetFragment.Companion.REQUEST_KEY
 import com.example.retrofitapp.presentation.settings.SettingsActivity
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class CharacterFragment : Fragment() {
 
     private var _binding: CharacterFragmentBinding? = null
     private val binding get() = _binding!!
     private val characterAdapter = CharacterAdapter()
 
-    private val viewModel by viewModels<CharacterViewModel>()
-    private val favViewModel by viewModels<FavoriteViewModel>()
+    private val viewModel by viewModel<CharacterViewModel>()
+    private val favViewModel by viewModel<FavoriteViewModel>()
 
     private var loading = false
     private var previousTotalItemCount = 0
